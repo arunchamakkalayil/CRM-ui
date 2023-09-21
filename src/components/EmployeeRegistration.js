@@ -7,7 +7,7 @@ function EmployeeRegistration() {
 <div class="col-lg-6 m-auto mt-5">
   
         <section class="container pt-5" id="enroll">
-         <h2 class="">Signup</h2>
+         <h2 class="">Employee Registration</h2>
          <form  name="form" class="form">
            <div class="input-box">
       

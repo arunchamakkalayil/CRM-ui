@@ -1,5 +1,8 @@
 import React from 'react'
 import './form.css'
+import { Route, Link, Routes } from 'react-router-dom';
+
+import EmployeeRegistration from './EmployeeRegistration';
 
 function EmployeeLogin() {
   return (
@@ -7,7 +10,7 @@ function EmployeeLogin() {
 <div class="col-lg-6 m-auto mt-5">
   
         <section class="container pt-5" id="enroll">
-         <h2 class="">Registration</h2>
+         <h2 class=""> Employee Login</h2>
          <form  name="form" class="form">
            <div class="input-box">
       
@@ -62,9 +65,16 @@ function EmployeeLogin() {
           </div>
           
          </form><br />
-         <p className='text-center'>Create an account <span>Signup</span></p>
+         <p className='text-center'>Create an account <span><Link to="/EmployeeRegistration">Signup</Link></span></p>
+         <Routes>
+      <Route  path='/EmployeeRegistration' element={< EmployeeRegistration />}></Route>
+      </Routes>
+
+   
+      
+ 
        </section>
-     
+
 </div>
 
   )

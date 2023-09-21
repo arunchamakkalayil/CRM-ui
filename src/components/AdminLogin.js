@@ -7,7 +7,7 @@ function AdminLogin() {
 <div class="col-lg-6 m-auto mt-5">
   
         <section class="container pt-5" id="enroll">
-         <h2 class="">Registration</h2>
+         <h2 class="">Admin Login</h2>
          <form  name="form" class="form">
            <div class="input-box">
              <input type="text" name="Name" class="form-control" placeholder="Enter Full Name" required></input>
