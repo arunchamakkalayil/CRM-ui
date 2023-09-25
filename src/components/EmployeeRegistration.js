@@ -1,68 +1,84 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './form.css'
-
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 function EmployeeRegistration() {
+  
+  const [name,setName]=useState()
+  const [empid,setEmpid]=useState()
+  const [email,setEmail]=useState()
+  const [password,setPassword]=useState()
+  const [phone,setPhone]=useState()
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  
+  const handleSubmit = async(e)=>{
+
+ e.preventDefault()
+
+ try {
+  const response = await axios.post('http://localhost:5000/EmployeeRegistration', {
+    name,
+    empid,
+    email,
+    password,
+    phone,
+  });
+
+  if (response.status === 201) {
+    // Registration successful
+    // Redirect to login or display a success message
+  }
+} catch (error) {
+  if (error.response && error.response.status === 400) {
+    // User already exists
+    setErrorMessage('User with this number exists');
+  } else {
+    // Other errors
+    console.error('Error:', error);
+    setErrorMessage('Error during registration');
+  }
+}
+};
   return (
 
-<div class="col-lg-6 m-auto mt-5">
+<div className="col-lg-6 m-auto mt-5">
   
-        <section class="container pt-5" id="enroll">
-         <h2 class="">Employee Registration</h2>
-         <form  name="form" class="form">
-           <div class="input-box">
+        <section className="container pt-5" id="enroll">
+         <h2 className="">Employee Registration</h2>
+         {errorMessage && <div className="error-message">{errorMessage}</div>}
+         <form  name="form" className="form" onSubmit={handleSubmit}>
+         <div className="input-box">
       
           
-             <input type="text" name="Name" class="form-control" placeholder="Enter Full Name" required></input>
+      <input type="text" name="empid" value={empid} onChange={(e)=>{setEmpid(e.target.value)}} className="form-control" placeholder="Employee ID" required></input>
+    </div>
+           <div className="input-box">
+      
+          
+             <input type="text" name="Name" value={name} onChange={(e)=>{setName(e.target.value)}} className="form-control" placeholder="Enter Full Name" required></input>
            </div>
-           <div class="column">
-             <div class="input-box">
+           <div className="input-box">
+          
+          <input type="email" className="form-control" value={email} onChange={(e)=>{setEmail(e.target.value)}} name="Email" placeholder="Enter Email Address" required></input>
+        </div>
+        <div className="input-box">
+          
+          <input type="password" className="form-control" value={password} onChange={(e)=>{setPassword(e.target.value)}} name="Password" placeholder="Password" required></input>
+        </div>
+           <div className="column">
+             <div className="input-box">
      
-               <input type="phone" class="form-control" name="Phone" placeholder="Phone" required></input>
+               <input type="phone" value={phone} className="form-control" onChange={(e)=>{setPhone(e.target.value)}} name="Phone" placeholder="Phone" required></input>
              </div>
-             <div class="input-box">
-          
-               <input type="email" class="form-control" name="Email" placeholder="Enter Email Address" required></input>
-             </div>
+            
            </div>
-          
-           <div class="column">
-             <div class="input-box">
-               <div class="select-box">
-                 <select name="Education" onchange='checkvalue(this.value)' >
-                   <option hidden>Education</option>
-                   <option>Plus Two</option>
-                   <option>Diploma</option>
-                   <option>UG</option>
-                   <option>PG</option>
-                   <option>PhD</option>
-                  
-                 </select>
-               </div>
-               
-             </div>
-           </div>
-           <div class="input-box address">
-             <div class="column">
-               <div class="select-box">
-                 <select name="Interested Domain">
-                   <option hidden>Domain</option>
-                   <option>Cybersecurity</option>
-                   <option>Data Science</option>
-                   <option>Full Stack Development</option>
-                   <option>Project Management</option>
-                   <option>IT Networking</option>
-                   <option>Cloud Computing</option>
-                 </select>
-               </div>
-             </div>
-           </div>
-         
-           <div class="text-center"><button type="submit">Send Message</button>
+           <div className="text-center"><button type="submit"  >Send Message</button>
 
           </div>
           
          </form><br />
-         <p className='text-center'>Already have an account ? <span>Login</span></p>
+         <p classNameName='text-center'>Already have an account ? <span><Link to="/EmployeeLogin">Login</Link></span></p>
        </section>
      
 </div>
