@@ -8,13 +8,15 @@ function Dashboard() {
     console.log(token);
   
     try {
-      const response = await Axios.get("http://localhost:5000/validuser", {
+      const response = await Axios.get("http://localhost:5000/dashboard", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
+      console.log(response.data)
+
       if (response.status === 200) {
         // User is valid, you can set some state or context variable here
         console.log("User is valid");

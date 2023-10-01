@@ -11,16 +11,6 @@ function Home() {
     <div className="container d-flex justify-content-around align-items-center min-vh-100">
      
       <div className='item-container'>
-        <Link to="/AdminLogin" className="link-no-underline">
-          <div>
-            <i className="bi bi-person-fill-gear" style={iconStyle}></i>
-          </div>
-
-        <h6 className='text-center'>ADMIN</h6> </Link>
-        
-      </div>
-
-      <div className='item-container'>
         <Link to="/EmployeeLogin" className="link-no-underline">
           <div>
             <i className="bi bi-people-fill" style={iconStyle}></i>

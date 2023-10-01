@@ -2,8 +2,8 @@ import Home from "./components/Home";
 import EmployeeRegistration from "./components/EmployeeRegistration";
 import { Route, Routes } from "react-router-dom";
 import EmployeeLogin from "./components/EmployeeLogin";
-import AdminLogin from "./components/AdminLogin";
-import Registration from "./components/AdminRegistration";
+
+
 
 import Dashboard from "./components/Dashboard";
 
@@ -17,10 +17,10 @@ function App() {
           element={<Home />}
         />
         <Route path="/EmployeeRegistration" element={<EmployeeRegistration />}/>
-        <Route path="/AdminLogin" element={<AdminLogin />}></Route>
+
 
         <Route path="/EmployeeLogin" element={<EmployeeLogin />}></Route>
-        <Route path="/Registration" element={<Registration />}></Route>
+
         <Route path="/validuser" element={<Dashboard />}></Route>
      
       </Routes>
