@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 .container{
     margin: auto;
 }
@@ -47,6 +49,10 @@
     font-weight: 400;
     margin-bottom: 8px;
   }
+  .container h2{
+    font-family: 'Black Ops One', cursive;
+    color: #0000EE;
+  }
   .form :where(.gender-option, .gender) {
     display: flex;
     align-items: center;
@@ -87,10 +93,10 @@
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: #6ebe44;
+    background: #0000EE;
   }
   .form button:hover {
-    background: #5a9d36;
+    background: #0000b1;
   }
   /*Responsive*/
   @media screen and (max-width: 500px) {

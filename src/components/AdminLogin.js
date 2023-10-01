@@ -6,8 +6,8 @@ function AdminLogin() {
 
 <div className="col-lg-6 m-auto mt-5">
   
-        <section className="container pt-5" id="enroll">
-         <h2 className="">Admin Login</h2>
+        <section className="container" id="enroll">
+         <h2 className="text-center">Admin Login</h2>
          <form  name="form" className="form">
           
          <div className="input-box">
@@ -24,7 +24,7 @@ function AdminLogin() {
            <div className="text-center"><button type="submit">Send Message</button>
           </div>
          </form><br />
-         <p classNameName='text-center'>Create an account <span><Link to="/Registration">Signup</Link></span></p>
+         <p className='text-center'>Create an account <span><Link to="/Registration">Signup</Link></span></p>
        </section>
      
 </div>

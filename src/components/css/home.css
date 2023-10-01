@@ -1,0 +1,25 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+
+.item-container{
+    padding: 10px 51px 10px 51px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    font-family: 'Black Ops One', cursive;
+border-radius: 10px;
+
+}
+.item-container a.link-no-underline {
+    text-decoration: none; /* Remove underline */
+  
+  }
+.container{
+
+    margin: auto;
+flex-wrap: wrap;
+    
+
+}
+.item-container:hover{
+   box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; 
+}

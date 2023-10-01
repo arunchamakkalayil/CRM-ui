@@ -8,7 +8,7 @@ function Registration() {
 <div className="col-lg-6 m-auto mt-5">
   
         <section className="container pt-5" id="enroll">
-         <h2 className="">Signup</h2>
+         <h2 className="text-center">Admin Signup</h2>
          <form  name="form" className="form">
            <div className="input-box">
       
@@ -37,7 +37,7 @@ function Registration() {
           </div>
           
          </form><br />
-         <p classNameName='text-center'>Already have an account ? <span><Link to="/AdminLogin">Login</Link></span></p>
+         <p className='text-center'>Already have an account ? <span><Link to="/AdminLogin">Login</Link></span></p>
        </section>
      
 </div>

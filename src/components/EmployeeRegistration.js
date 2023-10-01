@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import './form.css'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 function EmployeeRegistration() {
-  
+  const navigate = useNavigate();
   const [name,setName]=useState()
   const [empid,setEmpid]=useState()
   const [email,setEmail]=useState()
@@ -26,13 +26,14 @@ function EmployeeRegistration() {
   });
 
   if (response.status === 201) {
-    // Registration successful
-    // Redirect to login or display a success message
+    alert("Registration Successfull")
+    
+    navigate('/EmployeeLogin');
   }
 } catch (error) {
   if (error.response && error.response.status === 400) {
     // User already exists
-    setErrorMessage('User with this number exists');
+    setErrorMessage('User with this email already exists');
   } else {
     // Other errors
     console.error('Error:', error);
@@ -45,7 +46,7 @@ function EmployeeRegistration() {
 <div className="col-lg-6 m-auto mt-5">
   
         <section className="container pt-5" id="enroll">
-         <h2 className="">Employee Registration</h2>
+         <h2 className="text-center">Employee Registration</h2>
          {errorMessage && <div className="error-message">{errorMessage}</div>}
          <form  name="form" className="form" onSubmit={handleSubmit}>
          <div className="input-box">
@@ -78,7 +79,7 @@ function EmployeeRegistration() {
           </div>
           
          </form><br />
-         <p classNameName='text-center'>Already have an account ? <span><Link to="/EmployeeLogin">Login</Link></span></p>
+         <p className='text-center'>Already have an account ? <span><Link to="/EmployeeLogin">Login</Link></span></p>
        </section>
      
 </div>
