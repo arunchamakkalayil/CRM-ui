@@ -1,33 +1,15 @@
 import React, { useEffect } from "react";
 import Navbar from "./Navbar";
-import Axios from "axios";
+
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+  const navigate = useNavigate();
   const dashboardValid = async () => {
     let token = localStorage.getItem("usersdatatoken");
-    console.log(token);
-  
-    try {
-      const response = await Axios.get("http://localhost:5000/dashboard", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log(response.data)
-
-      if (response.status === 200) {
-        // User is valid, you can set some state or context variable here
-        console.log("User is valid");
-      } else {
-        // User is not valid, handle accordingly
-        console.log("User is not valid");
-      }
-    } catch (error) {
-      // Handle network errors or other errors here
-      console.error(error);
-    }
+    
+    if(!token) navigate('/EmployeeLogin')
+   
   };
   
   

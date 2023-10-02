@@ -21,7 +21,7 @@ function App() {
 
         <Route path="/EmployeeLogin" element={<EmployeeLogin />}></Route>
 
-        <Route path="/validuser" element={<Dashboard />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}></Route>
      
       </Routes>
     </div>
