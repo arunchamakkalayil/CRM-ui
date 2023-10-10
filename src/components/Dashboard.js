@@ -1,17 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useContext } from "react";
 import Navbar from "./Navbar";
-
-import { useNavigate } from 'react-router-dom'
+import { useNavigate , Link} from 'react-router-dom'
+import Context from '../context/Context';
+import Table from "./Table";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const {delMessage, setDelMessage,delStatus, setDelStatus}=useContext(Context);
+
+  
+
   const dashboardValid = async () => {
     let token = localStorage.getItem("usersdatatoken");
     
     if(!token) navigate('/EmployeeLogin')
    
   };
-  
+
+
   
   useEffect(() => {
     dashboardValid();
@@ -22,18 +28,23 @@ function Dashboard() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+   
       }}
-    >
-      <div>
-        <Navbar />
-        <div className="" style={{ width: "18rem" }}>
-          <img className="card-img-top" src="employee.png" alt="profile" />
-          <div className=" pt-3 card-body text-center">
-            <h5 className="card-title">Welcome</h5>
-            <p className="card-text">User</p>
-          </div>
-        </div>
+    ><Navbar />
+      <div style={{
+         marginTop:"100px"
+   
+      }}>
+               {delMessage && (
+  <div className="alert alert-success" role="alert">
+    {delStatus}
+  </div>
+)}
+        <Link to="/create" className="btn btn-success">Add Data</Link>
+
+
+        <Table />
+       
       </div>
     </div>
   );

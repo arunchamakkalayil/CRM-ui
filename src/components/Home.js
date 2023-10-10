@@ -16,7 +16,7 @@ function Home() {
             <i className="bi bi-people-fill" style={iconStyle}></i>
           </div>
        
-        <h6 className='text-center'>EMPLOYEE</h6> </Link>
+         </Link>
       </div>
     </div>
   );

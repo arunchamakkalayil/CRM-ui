@@ -1,6 +1,16 @@
 import React from 'react'
-
+import { useNavigate } from "react-router-dom";
 function Navbar() {
+  const navigate = useNavigate();
+
+   // Function to handle logout
+   const handleLogout = () => {
+    // Clear the user's token from local storage
+    localStorage.removeItem("usersdatatoken");
+
+    // Navigate to the login page
+    navigate("/EmployeeLogin");
+  };
   return (
     <div>
       <nav className="navbar bg-body-tertiary fixed-top">
@@ -9,7 +19,7 @@ function Navbar() {
     <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
-    <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div className="offcanvas-header">
         <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -37,8 +47,9 @@ function Navbar() {
           </li>
         </ul>
         <form className="d-flex mt-3" role="search">
-          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
-          <button classNameName="btn btn-outline-success" type="submit">Search</button>
+        <button onClick={handleLogout} className="btn btn-danger">
+          Logout
+        </button>
         </form>
       </div>
     </div>

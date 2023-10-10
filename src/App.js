@@ -6,6 +6,7 @@ import EmployeeLogin from "./components/EmployeeLogin";
 
 
 import Dashboard from "./components/Dashboard";
+import AddData from "./components/AddData";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         <Route path="/EmployeeLogin" element={<EmployeeLogin />}></Route>
 
         <Route path="/dashboard" element={<Dashboard />}></Route>
-     
+        <Route path="/create" element={<AddData />}></Route>
       </Routes>
     </div>
   );
