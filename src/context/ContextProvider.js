@@ -7,6 +7,9 @@ const ContextProvider = ({ children }) => {
  
   const [delMessage, setDelMessage] = useState(false);
   const [delStatus, setDelStatus] = useState("");
+ 
+
+
 
 
     // For debugging purposes, log the values

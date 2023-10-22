@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./form.css";
-
+import { useNavigate } from 'react-router-dom'
 
 
 function AddData() {
-
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errVisible, seterrVisible] = useState(false);
@@ -13,7 +13,7 @@ function AddData() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [status, setStatus] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,6 +22,7 @@ function AddData() {
         name,
         email,
         phone,
+        status,
       });
 
       console.log(response);
@@ -50,6 +51,9 @@ function AddData() {
 
   return (
     <div className="col-lg-6 m-auto mt-5">
+      <button onClick={()=>{
+        navigate("/dashboard")
+      }}  type="button" className="btn btn-primary">Go Back</button>
       <section className="container pt-5" id="enroll">
         <h2 className="text-center">Add Data</h2>
         {isVisible && (
@@ -75,7 +79,7 @@ function AddData() {
               }}
               className="form-control"
               placeholder="Enter Full Name"
-              required
+    
             ></input>
           </div>
           <div className="input-box">
@@ -88,7 +92,7 @@ function AddData() {
               }}
               name="Email"
               placeholder="Enter Email Address"
-              required
+           
             ></input>
           </div>
 
@@ -107,6 +111,28 @@ function AddData() {
               ></input>
             </div>
           </div>
+
+          <div className="column">
+  <div className="input-box">
+    <select
+      value={status}
+      className="form-control"
+      onChange={(e) => {
+        setStatus(e.target.value);
+      }}
+      name="Status"
+      required
+    >
+      <option value="" disabled>Select a Status</option>
+      <option value="closed">Closed</option>
+      <option value="pending">Pending</option>
+      <option value="not_connected">Not Connected</option>
+   
+    </select>
+  </div>
+</div>
+
+
           <div className="text-center">
             <button type="submit">Submit</button>
           </div>
