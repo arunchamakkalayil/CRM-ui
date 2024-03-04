@@ -18,7 +18,7 @@
     margin-top: 20px;
   }
   .input-box label {
-    color:  #012970;
+    color:  6499E9;
   }
   .form :where(.input-box input, .select-box) {
     position: relative;
@@ -51,7 +51,7 @@
   }
   .container h2{
     font-family: 'Black Ops One', cursive;
-    color: #0000EE;
+    color: #6499E9;
   }
   .form :where(.gender-option, .gender) {
     display: flex;
@@ -93,10 +93,10 @@
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: #0000EE;
+    background: #4978bd;
   }
   .form button:hover {
-    background: #0000b1;
+    background: #5c8fda;
   }
   /*Responsive*/
   @media screen and (max-width: 500px) {

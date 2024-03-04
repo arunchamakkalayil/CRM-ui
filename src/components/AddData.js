@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./form.css";
-import { useNavigate } from 'react-router-dom'
-
 
 function AddData() {
-  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errVisible, seterrVisible] = useState(false);
@@ -13,6 +11,7 @@ function AddData() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [phone, setPhone] = useState("");
+  const [month, setMonth] = useState("");
   const [status, setStatus] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +21,7 @@ function AddData() {
         name,
         email,
         phone,
+        month,
         status,
       });
 
@@ -29,9 +29,14 @@ function AddData() {
       if (response.status === 201) {
         setIsVisible(true);
         setMessage("Data saved successfully");
-        // Automatically hide the alert after 4 seconds (4000 milliseconds)
+
         setTimeout(() => {
           setIsVisible(false);
+          setName("")
+          setMessage("")
+          setEmail("")
+          setPhone("")
+          setStatus("")
         }, 4000);
       } 
     } catch (error) {
@@ -42,31 +47,38 @@ function AddData() {
         // Automatically hide the alert after 4 seconds (4000 milliseconds)
         setTimeout(() => {
           seterrVisible(false);
+          setName("")
+          setMessage("")
+          setEmail("")
+          setPhone("")
+          setStatus("")
         }, 4000);
       } else {
         console.error(error);
       }
     }
   };
-
+ // Function to handle change in selected month
+ const handleMonthChange = (e) => {
+  setMonth(e.target.value);
+};
   return (
     <div className="col-lg-6 m-auto mt-5">
-      <button onClick={()=>{
-        navigate("/dashboard")
-      }}  type="button" className="btn btn-primary">Go Back</button>
+     
       <section className="container pt-5" id="enroll">
         <h2 className="text-center">Add Data</h2>
         {isVisible && (
-          <div className="alert alert-success" role="alert">
-            {message}
-          </div>
-        )}
+  <div className="alert alert-success" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-check2-circle"> </i>
+    {message}
+  </div>
+)}
 
-        {errVisible && (
-          <div className="alert alert-danger" role="alert">
-            {error}
-          </div>
-        )}
+{errVisible && (
+  <div className="alert alert-danger" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-exclamation-diamond"> </i>
+    {error}
+  </div>
+)}
+
 
         <form name="form" className="form" onSubmit={handleSubmit}>
           <div className="input-box">
@@ -95,7 +107,27 @@ function AddData() {
            
             ></input>
           </div>
-
+          <div className="input-box">
+          <select required
+        className="form-select"
+        value={month}
+        onChange={handleMonthChange}
+      >
+        <option value="" disabled>Select Month</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+      </select>
+          </div>
           <div className="column">
             <div className="input-box">
               <input
@@ -127,6 +159,7 @@ function AddData() {
       <option value="closed">Closed</option>
       <option value="pending">Pending</option>
       <option value="not_connected">Not Connected</option>
+      <option value="lost">Lost</option>
    
     </select>
   </div>

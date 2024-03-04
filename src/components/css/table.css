@@ -22,4 +22,47 @@ table.dataTable thead .sorting_desc_disabled:before {
     color: #ff0000; /* Change to your desired hover text color */
     cursor: pointer;
   }
+  .table-responsive{
+    position: relative;
+    height: 30rem;
+   
+ /* overflow-y: hidden; */
+ -ms-overflow-style: none; 
+ scrollbar-width: none;     
+
+ /* For Webkit browsers (Chrome, Safari) */
+  &::-webkit-scrollbar {
+   display: none;
+ }
+    
+  }
+
+  #form-control{
+
+width: 90%;
+
+  }
+
+ 
+
+  .mb-5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 5px; /* Adjust the margin as needed */
+  }
   
+  .table-container {
+    overflow: auto;
+
+    scrollbar-width: none;
+ -ms-overflow-style: none;
+
+  }
+  .sticky-header th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff; /* Set the background color as needed */
+    z-index: 1;
+  }

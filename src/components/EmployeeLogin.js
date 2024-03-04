@@ -118,8 +118,9 @@ function EmployeeLogin() {
 
   return (
     <div className="col-lg-6 m-auto mt-5">
-      <section className="container pt-5" id="enroll">
-        <h2 className="text-center"> Employee Login</h2>
+
+<section className="container pt-5" id="enroll">
+        <h2 className="text-center" > Employee Login</h2>
         {errorMessage && (
           <div className=" text-center error-message">{errorMessage}</div>
         )}
@@ -164,6 +165,7 @@ function EmployeeLogin() {
           </span>
         </p>
       </section>
+	
     </div>
   );
 }

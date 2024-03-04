@@ -1,22 +1,19 @@
-import React, { useEffect, useContext, useState } from "react";
-import Navbar from "./Navbar";
-import { useNavigate, Link } from "react-router-dom";
-import Context from "../context/Context";
-import Table from "./Table";
+import React, { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import LeadsMonthChart from "./LeadMonthChart";
 import axios from "axios";
 
-
+import "./style.css";
 function Dashboard() {
+  const [closed, setClosed] = useState("0");
 
-  const [closed, setClosed] = useState('0');
-  const [total, setTotal] = useState('0');
-  const [pending, setPending] = useState('0');
-  const [notConnected, setNotConnected] = useState('0');
+  const [pending, setPending] = useState("0");
+  const [notConnected, setNotConnected] = useState("0");
+  const [lost, setLost] = useState("0");
 
   const navigate = useNavigate();
-  const { delMessage, delStatus } = useContext(Context);
-  
-  
+
   useEffect(() => {
     const dashboardValid = async () => {
       let token = localStorage.getItem("usersdatatoken");
@@ -28,96 +25,131 @@ function Dashboard() {
     getCount();
   }, [navigate]);
 
+
+
   const getCount = async () => {
     try {
       const response = await axios.get("http://localhost:5000/count");
-     
-      setClosed(response.data.data.closed)
-      setPending(response.data.data.pending)
-      setNotConnected(response.data.data.not_connected)
-      setTotal(response.data.data.total)
 
+      setClosed(response.data.data.closed);
+      setPending(response.data.data.pending);
+      setNotConnected(response.data.data.not_connected);
+
+      setLost(response.data.data.lost);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-
-
-
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Navbar />
-      <div
-        style={{
-          marginTop: "100px",
-          position: "relative", // To allow positioning the floating button
-        }}
-      >
-        <Link
-          to="/create"
-          className="btn btn-success btn-floating"
+    <div style={{ width: "100%" }}>
+      <div style={{ display: "flex" }}>
+        <div
           style={{
-            position: "fixed",
-            bottom: "20px", // Adjust these values for the desired position
-            right: "20px", // Adjust these values for the desired position
-            padding: "10px 20px",
-            borderRadius: "50%",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-            fontSize: "24px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            margin: "0 auto",
+            backgroundColor: "fff",
+            zIndex: "-1",
           }}
         >
-          +
-        </Link>
-        <div className="px-5 ">
-          <div className="row">
-            <div className="col-md-3">
-              <div className="card bg-primary">
-                <div className="card-body">
-                  <h5 className="card-title text-white">{total}</h5>
-                  <p className="card-text text-white">Total Leads</p>
+          <div
+            style={{
+              marginTop: "30px",
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <div className="px-5">
+              <div className="row">
+              
+                <div className="col-md-3">
+                <div
+                    className="card shadow"
+                    style={{ backgroundColor: "#46c35f", border: "none" }}
+                  >
+                    <div class="card-body">
+                      <h6 class="text-white">Closed Leads</h6>
+                      <h2 class="text-end text-white">
+                        <i class="bi bi-check2-circle float-start"></i>
+                        <span>{closed}</span>
+                      </h2>
+                      <p class="m-b-0 text-white">
+                      Percentage<span class="float-end text-white">33%</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                <div
+                    className="card shadow"
+                    style={{ backgroundColor: "#f9b115", border: "none" }}
+                  >
+                    <div class="card-body">
+                      <h6 class="text-white">Pending Leads</h6>
+                      <h2 class="text-end text-white">
+                        <i class="bi bi-arrow-left-right float-start"></i>
+                        <span>{pending}</span>
+                      </h2>
+                      <p class="m-b-0 text-white">
+                      Percentage<span class="float-end text-white">42%</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                <div
+                    className="card shadow"
+                    style={{ backgroundColor: "#4099ff", border: "none" }}
+                  >
+                    <div class="card-body">
+                      <h6 class="text-white">Not Connected</h6>
+                      <h2 class="text-end text-white">
+                        <i class="bi bi-tag float-start"></i>
+                        <span>{notConnected}</span>
+                      </h2>
+                      <p class="m-b-0 text-white">
+                      Percentage<span class="float-end text-white">2%</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div
+                    className="card shadow"
+                    style={{ backgroundColor: "#f96868", border: "none" }}
+                  >
+                    <div class="card-body">
+                      <h6 class="text-white">Lost Leads</h6>
+                      <h2 class="text-end text-white">
+                        <i class="bi bi-x-circle float-start"></i>
+                        <span>{lost}</span>
+                      </h2>
+                      <p class="m-b-0 text-white">
+                        Percentage<span class="float-end text-white">12%</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
-              <div className="card bg-success">
-                <div className="card-body">
-                  <h5 className="card-title text-white">{closed}</h5>
-                  <p className="card-text text-white">Closed Leads</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card bg-warning">
-                <div className="card-body">
-                  <h5 className="card-title text-white">{pending}</h5>
-                  <p className="card-text text-white">Pending Leads</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card bg-danger">
-                <div className="card-body">
-                  <h5 className="card-title text-white">{notConnected}</h5>
-                  <p className="card-text text-white">Not connected</p>
-                </div>
-              </div>
+
+            {/* 
+              <div style={{ width: "30rem", marginTop: "20px" }}>
+                <LeadsChart
+                  closed={closed}
+                  pending={pending}
+                  notConnected={notConnected}
+                  lost={lost}
+                />
+              </div> */}
+
+            <div className="shadow p-4 mt-5" style={{ width: "93%", margin: "auto",borderRadius:"10px" }}>
+              <LeadsMonthChart />
             </div>
           </div>
-        </div>
-        {delMessage && (
-          <div className="alert alert-success" role="alert">
-            {delStatus}
-          </div>
-        )}
-        <div>
-          <Table onClick={getCount} />
         </div>
       </div>
     </div>
