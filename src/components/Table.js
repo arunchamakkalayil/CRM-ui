@@ -181,6 +181,9 @@ function Table(props) {
     Phone
   </th>
   <th className="px-1 th-sm text-left py-3" scope="col">
+    Month
+  </th>
+  <th className="px-1 th-sm text-left py-3" scope="col">
     Status
   </th>
   <th className="px-1 th-s text-left py-3" scope="col">
@@ -234,6 +237,19 @@ function Table(props) {
               </td>
               <td className="">
                 {editingItemId === item._id ? (
+                  <input
+                    type="text"
+                    value={editedItem.month}
+                    onChange={(e) =>
+                      setEditedItem({ ...editedItem, month: e.target.value })
+                    }
+                  />
+                ) : (
+                  item.month
+                )}
+              </td>
+              <td className="">
+                {editingItemId === item._id ? (
                   <select
                     value={editedItem.status}
                     onChange={(e) =>
@@ -250,7 +266,6 @@ function Table(props) {
                   item.status
                 )}
               </td>
-
               <td className="">
                 {editingItemId === item._id ? (
                   <>

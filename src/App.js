@@ -9,6 +9,7 @@ import AddData from "./components/AddData";
 import "./App.css";
 import Schedule from "./components/Schedule";
 import ScheduleForm from "./components/ScheduleForm";
+import EmailBox from "./components/EmailBox";
 function App() {
   const location = useLocation();
 
@@ -34,6 +35,8 @@ function App() {
         <Route path="/create" element={<AddData />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/scheduleform" element={<ScheduleForm />} />
+        <Route path="/email" element={<EmailBox />} />
+
       </Routes>
     </div>
   );
