@@ -24,10 +24,10 @@ const Sidebar = () => {
     navigate("/EmployeeLogin");
   };
   return (
-    <div className='shadow' style={{ display: 'flex',minHeight:"100vh" ,overflow: 'scroll initial'}}>
+    <div className='shadow' style={{ display: 'flex' ,height:'100vh',overflow: 'scroll initial'}}>
       <CDBSidebar textColor="#fff" backgroundColor="#fff">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-          <a href="/" className="text-decoration-none" style={{ color: "rgb(116, 116, 116)" }}>
+          <a href="/" className="text-decoration-none" style={{ color: "#fff" }}>
             Lead Tracker
           </a>
         </CDBSidebarHeader>
@@ -47,9 +47,6 @@ const Sidebar = () => {
               <CDBSidebarMenuItem icon="inbox">Email</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/hero404" target="_blank" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
-            </NavLink>
         
           </CDBSidebarMenu>
         </CDBSidebarContent>

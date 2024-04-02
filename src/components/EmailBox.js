@@ -71,17 +71,17 @@ function EmailBox() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-12">
-          <div className="form-group">
+    <div className="container" >
+      <div className="row" style={{ width: '80%' }}>
+        <div className="col-md-12" >
+          <div className="form-group" >
             <label htmlFor="to">To:</label>
             <input
               type="text"
               id="to"
               className="form-control"
               value={emailData.to}
-              
+              style={{ width: '100%', minHeight: '50px' }}
             />
           </div>
           <div className="form-group">
@@ -92,6 +92,7 @@ function EmailBox() {
               className="form-control"
               value={emailData.subject}
               onChange={(e) => handleInputChange(e, 'subject')}
+              style={{ width: '100%', minHeight: '60px' }}
             />
           </div>
           <div className="form-group">
@@ -101,6 +102,7 @@ function EmailBox() {
               className="form-control"
               value={emailData.body}
               onChange={(e) => handleInputChange(e, 'body')}
+              style={{ width: '100%', minHeight: '150px' }}
             ></textarea>
           </div>
           <div className="form-group">

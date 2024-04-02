@@ -1,9 +1,13 @@
+// eslint-disable-next-line
 import React, { useEffect } from "react";
+// eslint-disable-next-line
 import "./form.css";
+// eslint-disable-next-line
 import { Link, useNavigate } from "react-router-dom";
+// eslint-disable-next-line
 import { useState } from "react";
 import axios from "axios";
-
+import 'lord-icon-element'; 
 function EmployeeLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -99,7 +103,7 @@ function EmployeeLogin() {
         setErrorMessage("");
         localStorage.setItem("usersdatatoken", response.data.result.token);
 
-        alert("Login Successfull");
+    
         navigate("/dashboard");
       }
     } catch (error) {
@@ -117,56 +121,71 @@ function EmployeeLogin() {
   };
 
   return (
-    <div className="col-lg-6 m-auto mt-5">
+   <div className="m-4 w-100 d-flex justify-content-center align-items-center ">
+   <div className="container col-md-5 col-lg-6 col-xl-3 col-sm-8 m-auto d-flex justify-content-center align-items-center  p-4 rounded">
+  <div className="logo">
+  <lord-icon
+    src="https://cdn.lordicon.com/lhwyshcs.json"
+    trigger="loop"
+    delay="2000"
 
-<section className="container pt-5" id="enroll">
-        <h2 className="text-center" > Employee Login</h2>
-        {errorMessage && (
-          <div className=" text-center error-message">{errorMessage}</div>
-        )}
-        <form name="form" className="form" onSubmit={handleSubmit}>
-          <div className="input-box">
-            <input
-              type="email"
-              className="form-control"
-              name="Email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              placeholder="Enter Email Address"
-              required
-            ></input>
-          </div>
+    state="hover-jump"
+    colors="primary:#30c9e8,secondary:#0d6efd"
+    style={{ width: '90px', height: '90px' }}
+  >
+  </lord-icon>
+  </div>
+  
+    <h2 className="text-center">Login</h2>
+    {errorMessage && (
+      <div className="text-center error-message">{errorMessage}</div>
+    )}
+    <form name="form" className="form" onSubmit={handleSubmit}>
+      <div className="input-box">
+        <input
+          type="email"
+          className="form-control"
+          name="Email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          placeholder="Email "
+          required
+        ></input>
+      </div>
 
-          <div className="input-box">
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              placeholder="password"
-              required
-            ></input>
-          </div>
+      <div className="input-box">
+        <input
+          type="password"
+          className="form-control "
+          name="password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+          placeholder="Password"
+          required
+        ></input>
+      </div>
 
-          <div className="text-center">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
-        <br />
-        <p className="text-center">
-          Create an account{" "}
-          <span>
-            <Link to="/EmployeeRegistration">Signup</Link>
-          </span>
-        </p>
-      </section>
-	
-    </div>
+      <div className="text-center">
+        <button type="submit" className="btn btn-primary fontstyle"><span className="fontstyle">Login</span></button>
+      </div>
+    </form>
+    <br />
+    <p className="text-center fontstyle">
+      Create an account{" "}
+      <span >
+        <Link  to="/EmployeeRegistration">Signup</Link>
+      </span>
+    </p>
+
+</div>
+  
+</div>
+  
+  
   );
 }
 

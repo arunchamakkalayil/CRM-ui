@@ -3,6 +3,7 @@ import axios from "axios";
 import Context from "../context/Context";
 import {  Link } from "react-router-dom";
 import "./css/table.css";
+import * as XLSX from "xlsx";
 
 function Table(props) {
   console.log(props)
@@ -16,6 +17,7 @@ function Table(props) {
     email: "",
     phone: "",
     status:"",
+    month: "" // Added month field
   });
 
   const handleEdit = (item) => {
@@ -25,7 +27,7 @@ function Table(props) {
 
   const handleCancelEdit = () => {
     setEditingItemId(null);
-    setEditedItem({ name: "", email: "", phone: "" });
+    setEditedItem({ name: "", email: "", phone: "", status: "", month: "" });
   };
 
   const handleUpdate = async () => {
@@ -44,7 +46,7 @@ function Table(props) {
       );
     
       setEditingItemId(null);
-      setEditedItem({ name: "", email: "", phone: "", status: "" });
+      setEditedItem({ name: "", email: "", phone: "", status: "", month: "" });
 
      
     } catch (error) {
@@ -110,17 +112,33 @@ function Table(props) {
   const filteredData = data.filter((item) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
-      item.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.email.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.phone.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.status.toLowerCase().includes(lowerCaseSearchTerm)
+      (item.name && item.name.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (item.email && item.email.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (item.phone && item.phone.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (item.status && item.status.toLowerCase().includes(lowerCaseSearchTerm))||
+      (item.month && item.month.toLowerCase().includes(lowerCaseSearchTerm)) // Filter by month as well
+
     );
   });
-
+  
+  const exportToExcel = () => {
+    const filename = "table_data.xlsx";
+    const formattedData = filteredData.map((item) => ({
+      Name: item.name,
+      Email: item.email,
+      Phone: item.phone,
+      Month:item.month,
+      Status: item.status,
+    }));
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, filename);
+  };
 
   return (
 
-<div className="d-flex flex-column shadow" style={{width:"75%",margin:"auto",borderRadius:"10px"}}>
+<div className="d-flex flex-column shadow" style={{width:"75%",margin:"auto",borderRadius:"10px",backgroundColor:"#fff"}}>
       <Link
                 to="/create"
                 className="btn btn-success btn-floating"
@@ -135,6 +153,7 @@ function Table(props) {
                   backgroundColor: "#28a745", // Green color
                   border: "none",
                   color: "white",
+                  zIndex:"1"
                 }}
               >
                 +
@@ -150,8 +169,8 @@ function Table(props) {
                 </div>
               )}
 
-      <div className="table-container pt-5 ">
-      <div className="table-responsive  px-5">
+<div className="table-container pt-5" style={{ overflowX: "auto" }}>
+      <div className="table-responsive px-5">
       <div className="mb-5">
         <input
           type="text"
@@ -161,6 +180,9 @@ function Table(props) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+         <button className="btn btn-primary m-2" onClick={exportToExcel}>
+      Export
+    </button>
       </div>
       <table
         id="dtBasicExample"
@@ -168,7 +190,7 @@ function Table(props) {
         cellSpacing="0"
         width="100%"
         
-      >
+      >  
        <thead className="sticky-header">
        <tr>
   <th className="px-1 th-sm text-left py-3" scope="col">

@@ -12,9 +12,9 @@ const LeadsChart = (props) => {
       type: 'donut',
     },
     height: 400,
-    labels: ["Pending", "Closed", "Not connected", "Lost"],
+    labels: [" Not connected", "Closed", "Pending", "Lost"],
     dataLabels: {
-      enabled: false
+      enabled: true
     },
     responsive: [{
       breakpoint: 480,
@@ -29,27 +29,29 @@ const LeadsChart = (props) => {
         height: "auto",
       }
     }]
+    
+
   });
 
   useEffect(() => {
+    const getCount = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/count");
+  
+        setClosed(response.data.data.closed);
+        setPending(response.data.data.pending);
+        setNotConnected(response.data.data.not_connected);
+        setLost(response.data.data.lost);
+        
+        setSeries([response.data.data.not_connected, response.data.data.closed, response.data.data.pending, response.data.data.lost]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
     
-  const getCount = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/count");
-
-      setClosed(response.data.data.closed);
-      setPending(response.data.data.pending);
-      setNotConnected(response.data.data.not_connected);
-      
-      setLost(response.data.data.lost);
-
-      setSeries([pending, closed, notConnected,lost]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
     getCount();
-  }, );
+  }, []);
+  
 
 
   return (

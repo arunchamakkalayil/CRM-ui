@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
+import axios from 'axios';
 
 const ApexChart = () => {
-  const [chartState, setChartState] = useState({
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const [chartData, setChartData] = useState({
     series: [
       {
-        name: 'Desktops',
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 200,0,0,0],
+        name: 'Leads',
+        data: [],
       },
     ],
     options: {
@@ -24,7 +27,7 @@ const ApexChart = () => {
         curve: 'straight',
       },
       title: {
-        text: 'Leads Trend By Month 2023',
+        text: 'Leads Trend By Month',
         align: 'left',
       },
       grid: {
@@ -34,14 +37,37 @@ const ApexChart = () => {
         },
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep','Oct','Nov','Dec'],
+        categories: months,
       },
     },
   });
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/monthCount");
+      const responseData = response.data;
+console.log(responseData)
+const leadCounts = months.map(month => {
+  return responseData.data[month] || 0;
+});
+
+
+      setChartData(prevState => ({
+        ...prevState,
+        series: [{ data: leadCounts }],
+      }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
-    <div id="chart" >
-      <Chart options={chartState.options} series={chartState.series} type="line" height={420} />
+    <div id="chart">
+      <Chart options={chartData.options} series={chartData.series} type="line" height={420} />
     </div>
   );
 };
