@@ -16,7 +16,7 @@ function EmailBox() {
     const fetchLeadsEmails = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/userdata'); // Adjust the endpoint URL
+        const response = await axios.get(`${process.env.URL}/userdata`); // Adjust the endpoint URL
         const leads = response.data.data;
         // const emails = leads.map(lead => lead.email);
         setLeadsEmails(leads);
@@ -42,7 +42,7 @@ function EmailBox() {
       // Perform email sending logic here using Axios or any other method
       console.log('Email data:', emailData);
       // Example: Send email using Axios
-      await axios.post('http://localhost:5000/email', {
+      await axios.post(`${process.env.URL}/email`, {
         ...emailData,
         to: emailData.to.split(','),
       });

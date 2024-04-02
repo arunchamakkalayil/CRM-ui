@@ -57,7 +57,7 @@ function EmployeeRegistration() {
 
     if (validateForm()) {
       try {
-        const response = await axios.post('http://localhost:5000/EmployeeRegistration', {
+        const response = await axios.post(`${process.env.URL}/EmployeeRegistration`, {
           name,
           empid,
           email,

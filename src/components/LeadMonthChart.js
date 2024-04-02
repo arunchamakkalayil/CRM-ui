@@ -48,7 +48,7 @@ const ApexChart = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/monthCount");
+      const response = await axios.get(`${process.env.URL}/monthCount`);
       const responseData = response.data;
 console.log(responseData)
 const leadCounts = months.map(month => {

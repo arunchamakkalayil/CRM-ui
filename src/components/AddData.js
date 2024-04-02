@@ -43,7 +43,7 @@ function AddData() {
         status,
       };
       console.log(postData);
-      const response = await axios.post("http://localhost:5000/addData", postData);
+      const response = await axios.post(`${process.env.URL}/addData`, postData);
 
       console.log(response);
       if (response.status === 201) {
@@ -74,7 +74,7 @@ function AddData() {
 
       const excelData = { data: filteredData };
 console.log(excelData)
-      const response = await axios.post("http://localhost:5000/excelData", excelData);
+      const response = await axios.post(`${process.env.URL}/excelData`, excelData);
 
       console.log(response);
       if (response.status === 201) {

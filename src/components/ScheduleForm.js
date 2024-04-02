@@ -33,7 +33,7 @@ export default function ScheduleForm() {
     //     hour12: true,
     //   });
 
-      const response = await axios.post('http://localhost:5000/scheduleform', {
+      const response = await axios.post(`${process.env.URL}/scheduleform`, {
         interviewerName,
         interviewerEmail,
         recipientName,

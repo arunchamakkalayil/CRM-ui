@@ -33,7 +33,7 @@ function Table(props) {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/userdata/${editingItemId}`,
+        `${process.env.URL}/userdata/${editingItemId}`,
         editedItem
       );
 
@@ -71,7 +71,7 @@ function Table(props) {
 
     if (confirmed) {
       axios
-        .delete(`http://localhost:5000/userdata/${itemId}`)
+        .delete(`${process.env.URL}/userdata/${itemId}`)
         .then((response) => {
           setDelMessage(true);
           setDelStatus("Deleted Successfully");
@@ -91,7 +91,7 @@ function Table(props) {
 
   const getData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/userdata");
+      const response = await axios.get(`${process.env.URL}/userdata`);
 
       // Ensure response.data.data is an array
       if (Array.isArray(response.data.data)) {

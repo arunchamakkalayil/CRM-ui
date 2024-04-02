@@ -20,7 +20,7 @@ function Schedule() {
   const handleUpdate = async () => {
     try {
       setIsLoading(true); // Show loader while updating
-      await axios.put(`http://localhost:5000/schedule/${editData._id}`, formData);
+      await axios.put(`${process.env.URL}/schedule/${editData._id}`, formData);
       getData();
       setIsEditing(false);
     } catch (error) {
@@ -57,7 +57,7 @@ function Schedule() {
   const handleDelete = async (itemId) => {
     try {
       setIsLoading(true); // Show loader while deleting
-      await axios.delete(`http://localhost:5000/schedule/${itemId}`);
+      await axios.delete(`${process.env.URL}/schedule/${itemId}`);
       setData((prevData) => prevData.filter((item) => item._id !== itemId));
     } catch (error) {
       console.error("Error during delete:", error);
@@ -68,7 +68,7 @@ function Schedule() {
 
   const getData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/schedule");
+      const response = await axios.get(`${process.env.URL}/schedule`);
       setData(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

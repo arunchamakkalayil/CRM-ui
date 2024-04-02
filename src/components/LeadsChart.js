@@ -36,7 +36,7 @@ const LeadsChart = (props) => {
   useEffect(() => {
     const getCount = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/count");
+        const response = await axios.get(`${process.env.URL}/count`);
   
         setClosed(response.data.data.closed);
         setPending(response.data.data.pending);

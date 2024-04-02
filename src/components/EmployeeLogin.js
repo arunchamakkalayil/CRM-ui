@@ -22,7 +22,7 @@ function EmployeeLogin() {
         try {
           // Send a request to the backend to validate the token
           const response = await axios.post(
-            "http://localhost:5000/validateToken",
+            `${process.env.URL}/validateToken`,
             {},
             {
               headers: {
