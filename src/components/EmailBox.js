@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from "react-router-dom";
 function EmailBox() {
   const [emailData, setEmailData] = useState({
     to: '',
@@ -11,8 +11,56 @@ function EmailBox() {
   const [leadsEmails, setLeadsEmails] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
+  const navigate = useNavigate();
   useEffect(() => {
+    const userLoggedIn = async () => {
+      const token = localStorage.getItem("usersdatatoken");
+
+      if (token) {
+        try {
+          // Send a request to the backend to validate the token
+          const response = await axios.post(
+            `${process.env.REACT_APP_URL}/validateToken`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            // Token is valid, navigate to the dashboard
+            navigate("/dashboard");
+          } else {
+            // Handle unexpected response status codes
+            console.error("Unexpected response status:", response.status);
+          }
+        } catch (error) {
+          // Handle errors in a more specific way
+          if (axios.isCancel(error)) {
+            // Request was canceled
+            console.error("Request was canceled:", error);
+          } else if (error.response) {
+            // Server responded with an error status code
+            if (error.response.status === 401) {
+              // Unauthorized, token is invalid
+              console.error("Token is invalid");
+            } else {
+              console.error("Server error:", error.response.data);
+            }
+          } else if (error.request) {
+            // Request was made but no response was received
+            console.error("No response received:", error.request);
+          } else {
+            // Something else went wrong
+            console.error("Unknown error occurred:", error);
+          }
+        }
+      }
+    };
+
+    userLoggedIn();
     const fetchLeadsEmails = async () => {
       setIsLoading(true);
       try {
@@ -28,7 +76,7 @@ function EmailBox() {
     };
 
     fetchLeadsEmails();
-  }, []);
+  }, [navigate]);
 
   const handleInputChange = (e, field) => {
     setEmailData({
