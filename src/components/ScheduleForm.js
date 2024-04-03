@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { useLocation } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import './form.css'; // Import the common styles
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ export default function ScheduleForm() {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [meetLink, setMeetLink] = useState('');
   const [scheduledTime, setScheduledTime] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");

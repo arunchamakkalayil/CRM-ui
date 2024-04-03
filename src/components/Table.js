@@ -4,7 +4,7 @@ import Context from "../context/Context";
 import {  Link } from "react-router-dom";
 import "./css/table.css";
 import * as XLSX from "xlsx";
-
+import { useNavigate } from "react-router-dom";
 function Table(props) {
   console.log(props)
 
@@ -12,6 +12,7 @@ function Table(props) {
   const [data, setData] = useState([]);
   const [editingItemId, setEditingItemId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const [editedItem, setEditedItem] = useState({
     name: "",
     email: "",
@@ -154,7 +155,7 @@ function Table(props) {
 
     userLoggedIn();
     getData();
-  }, []);
+  }, [navigate]);
 
 
   const filteredData = data.filter((item) => {

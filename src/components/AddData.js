@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import axios from "axios";
 import { read, utils } from "xlsx";
 import "./form.css";
-
+import { useNavigate } from "react-router-dom";
 function AddData() {
   const [name, setName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -13,7 +13,14 @@ function AddData() {
   const [month, setMonth] = useState("");
   const [status, setStatus] = useState("");
   const [parsedData, setParsedData] = useState([]);
+  const navigate = useNavigate();
 
+  // useEffect(() => {
+   
+  
+    
+  // }, [third])
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
