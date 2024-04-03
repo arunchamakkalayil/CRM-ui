@@ -1,15 +1,17 @@
 
-.jGeaPm {
+.pro-sidebar .jGeaPm {
     background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 0%, rgba(28,28,28,1) 100%);
 
 }
-.jGeaPm .head-div{
+.pro-sidebar .jGeaPm .head-div{
 color:#ffffff;
 }
-.fRhOkl{
+.pro-sidebar .fRhOkl{
     background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 0%, rgba(28,28,28,1) 100%);
 
 }
+
+
 .pro-sidebar-footer{
     background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 0%, rgba(28,28,28,1) 100%);
 
@@ -17,6 +19,8 @@ color:#ffffff;
 .pro-sidebar-footer div{
     color: #ffffff;
     font-weight: bolder;
+        background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 0%, rgba(28,28,28,1) 100%);
+
 }
 .sc-hCPjZK div{
     color: #ffffff;
@@ -27,3 +31,7 @@ color:#ffffff;
     box-shadow: 0 0 25px -5px #ffffff;
 }
 
+.bJCtfa{
+    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 0%, rgba(28,28,28,1) 100%);
+
+}
