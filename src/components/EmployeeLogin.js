@@ -93,7 +93,7 @@ function EmployeeLogin() {
 
 
     try {
-      const response = await axios.post("http://localhost:5000/EmployeeLogin", {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/EmployeeLogin`, {
         email,
         password,
       });
