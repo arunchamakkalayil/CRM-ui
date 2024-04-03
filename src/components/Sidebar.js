@@ -25,14 +25,14 @@ const Sidebar = () => {
   };
   return (
     <div className='shadow' style={{ display: 'flex' ,height:'100vh',overflow: 'scroll initial'}}>
-      <CDBSidebar textColor="#fff" backgroundColor="#fff">
+      <CDBSidebar textColor="#fff" className='pro-sidebar-footer'>
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/" className="text-decoration-none" style={{ color: "#fff" }}>
             Lead Tracker
           </a>
         </CDBSidebarHeader>
 
-        <CDBSidebarContent className="sidebar-content">
+        <CDBSidebarContent className="sidebar-content pro-sidebar-footer">
           <CDBSidebarMenu>
             <NavLink exact to="/" activeClassName="activeClicked ">
               <CDBSidebarMenuItem icon="columns" >Dashboard</CDBSidebarMenuItem>
