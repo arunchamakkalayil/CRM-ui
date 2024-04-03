@@ -22,7 +22,7 @@ function EmployeeLogin() {
         try {
           // Send a request to the backend to validate the token
           const response = await axios.post(
-            `${process.env.URL}/validateToken`,
+            `${process.env.REACT_APP_URL}/validateToken`,
             {},
             {
               headers: {

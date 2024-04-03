@@ -34,7 +34,7 @@ function Dashboard() {
     try {
       setLoadingLost(true);
       
-      const response = await axios.get(`${process.env.URL}/count`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/count`);
       const responseData = response.data.data;
 
       // Get the data for the selected month

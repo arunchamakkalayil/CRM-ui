@@ -33,7 +33,7 @@ function Table(props) {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `${process.env.URL}/userdata/${editingItemId}`,
+        `${process.env.REACT_APP_URL}/userdata/${editingItemId}`,
         editedItem
       );
 
@@ -71,7 +71,7 @@ function Table(props) {
 
     if (confirmed) {
       axios
-        .delete(`${process.env.URL}/userdata/${itemId}`)
+        .delete(`${process.env.REACT_APP_URL}/userdata/${itemId}`)
         .then((response) => {
           setDelMessage(true);
           setDelStatus("Deleted Successfully");
@@ -91,7 +91,7 @@ function Table(props) {
 
   const getData = async () => {
     try {
-      const response = await axios.get(`${process.env.URL}/userdata`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/userdata`);
 
       // Ensure response.data.data is an array
       if (Array.isArray(response.data.data)) {

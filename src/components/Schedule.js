@@ -20,7 +20,7 @@ function Schedule() {
   const handleUpdate = async () => {
     try {
       setIsLoading(true); // Show loader while updating
-      await axios.put(`${process.env.URL}/schedule/${editData._id}`, formData);
+      await axios.put(`${process.env.REACT_APP_URL}/schedule/${editData._id}`, formData);
       getData();
       setIsEditing(false);
     } catch (error) {
@@ -57,7 +57,7 @@ function Schedule() {
   const handleDelete = async (itemId) => {
     try {
       setIsLoading(true); // Show loader while deleting
-      await axios.delete(`${process.env.URL}/schedule/${itemId}`);
+      await axios.delete(`${process.env.REACT_APP_URL}/schedule/${itemId}`);
       setData((prevData) => prevData.filter((item) => item._id !== itemId));
     } catch (error) {
       console.error("Error during delete:", error);
@@ -68,7 +68,7 @@ function Schedule() {
 
   const getData = async () => {
     try {
-      const response = await axios.get(`${process.env.URL}/schedule`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/schedule`);
       setData(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

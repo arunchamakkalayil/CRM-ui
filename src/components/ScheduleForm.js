@@ -33,7 +33,7 @@ export default function ScheduleForm() {
     //     hour12: true,
     //   });
 
-      const response = await axios.post(`${process.env.URL}/scheduleform`, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/scheduleform`, {
         interviewerName,
         interviewerEmail,
         recipientName,
