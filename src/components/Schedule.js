@@ -78,7 +78,9 @@ function Schedule() {
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
-
+    
+  
+      if (!token) navigate("/EmployeeLogin");
       if (token) {
         try {
           // Send a request to the backend to validate the token
@@ -94,7 +96,7 @@ function Schedule() {
 
           if (response.status === 200) {
             // Token is valid, navigate to the dashboard
-            navigate("/dashboard");
+            navigate("/schedule");
           } else {
             // Handle unexpected response status codes
             console.error("Unexpected response status:", response.status);

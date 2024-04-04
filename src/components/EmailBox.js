@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+
 function EmailBox() {
   const [emailData, setEmailData] = useState({
     to: '',
     subject: '',
     body: ''
   });
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [leadsEmails, setLeadsEmails] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const statuses = ['Closed', 'Not Connected', 'Pending', 'Lost'];
   const navigate = useNavigate();
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
-
+      if (!token) navigate("/EmployeeLogin");
       if (token) {
         try {
           // Send a request to the backend to validate the token
@@ -31,7 +34,7 @@ function EmailBox() {
 
           if (response.status === 200) {
             // Token is valid, navigate to the dashboard
-            navigate("/dashboard");
+            navigate("/email");
           } else {
             // Handle unexpected response status codes
             console.error("Unexpected response status:", response.status);
@@ -110,14 +113,35 @@ function EmailBox() {
   const handleMonthChange = (e) => {
     const selectedMonth = e.target.value;
     setSelectedMonth(selectedMonth);
-    const filteredLeads = selectedMonth ? leadsEmails.filter(lead => lead.month === selectedMonth) : leadsEmails;
+    filterData(selectedMonth, selectedStatus);
+  };
+
+  const handleStatusChange = (e) => {
+    const selectedStatus = e.target.value;
+    setSelectedStatus(selectedStatus);
+    filterData(selectedMonth, selectedStatus); // Call filterData to update emailData.to
+  };
+
+  const filterData = (month, status) => {
+    console.log('Filtering data');
+  console.log('Selected Month:', month);
+  console.log('Selected Status:', status);
+    let filteredLeads = leadsEmails;
+    if (month) {
+      filteredLeads = filteredLeads.filter(lead => lead.month === month);
+    }
+    if (status) {
+      filteredLeads = filteredLeads.filter(lead => lead.status === status);
+    }
     const emailList = filteredLeads.map(lead => lead.email).join(',');
     setEmailData({
       ...emailData,
       to: emailList
     });
-  };
 
+    console.log('Filtered Email List :', emailList);
+    
+  };
   return (
     <div className="container" >
       <div className="row" style={{ width: '80%' }}>
@@ -167,11 +191,25 @@ function EmailBox() {
               ))}
             </select>
           </div>
+          <div className="form-group">
+            <label htmlFor="status">Select Status:</label>
+            <select
+              id="status"
+              className="form-control"
+              value={selectedStatus}
+              onChange={handleStatusChange}
+            >
+              <option value="">All Statuses</option>
+              {statuses.map((status, index) => (
+                <option key={index} value={status}>{status}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="row">
         <div className="col-md-12">
-          <button className="btn btn-primary" onClick={handleSendEmail}>Send</button>
+          <button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>
           {isLoading && <div>Loading...</div>}
         </div>
       </div>
