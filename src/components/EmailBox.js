@@ -13,7 +13,7 @@ function EmailBox() {
   const [leadsEmails, setLeadsEmails] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const statuses = ['Closed', 'Not Connected', 'Pending', 'Lost'];
+  const statuses = ['Closed', 'Not_Connected', 'Pending', 'Lost'];
   const navigate = useNavigate();
   useEffect(() => {
     const userLoggedIn = async () => {
@@ -127,19 +127,24 @@ function EmailBox() {
   console.log('Selected Month:', month);
   console.log('Selected Status:', status);
     let filteredLeads = leadsEmails;
+   
     if (month) {
       filteredLeads = filteredLeads.filter(lead => lead.month === month);
     }
     if (status) {
-      filteredLeads = filteredLeads.filter(lead => lead.status === status);
+      filteredLeads = filteredLeads.filter(lead => lead.status.toLowerCase() === status.toLowerCase());
     }
+  
+    console.log('Filtered Leads:', filteredLeads);
+  
     const emailList = filteredLeads.map(lead => lead.email).join(',');
     setEmailData({
       ...emailData,
       to: emailList
     });
-
-    console.log('Filtered Email List :', emailList);
+  
+    console.log('Filtered Email List:', emailList);
+  
     
   };
   return (
