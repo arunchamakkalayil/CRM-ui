@@ -8,6 +8,16 @@
     align-items: center;
   
 }
+.form-row {
+  display: flex;
+
+  flex-direction: row;
+}
+
+.form-group {
+
+  margin: 10px;
+}
 
 
 .container header {
@@ -133,4 +143,11 @@
   }
   .fontstyle{
     font-family: 'Black Ops One', cursive;
+  }
+  .spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
   }

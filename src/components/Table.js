@@ -108,7 +108,6 @@ function Table(props) {
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
-      if (!token) navigate("/EmployeeLogin");
       if (token) {
         try {
           // Send a request to the backend to validate the token
@@ -151,7 +150,9 @@ function Table(props) {
             console.error("Unknown error occurred:", error);
           }
         }
-      }
+      }else{
+        navigate("/");
+         }
     };
 
     userLoggedIn();

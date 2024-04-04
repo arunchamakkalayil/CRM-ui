@@ -4,8 +4,7 @@ import LeadsMonthChart from "./LeadMonthChart";
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import Form from 'react-bootstrap/Form';
-import LeadsChart from "./LeadsChart";
+
 import Spinner from 'react-bootstrap/Spinner';
 function Dashboard() {
   const [closed, setClosed] = useState(0);
@@ -18,10 +17,10 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  
+
       const userLoggedIn = async () => {
         const token = localStorage.getItem("usersdatatoken");
-        if (!token) navigate("/EmployeeLogin");
+     
     
     
         if (token) {
@@ -65,6 +64,8 @@ function Dashboard() {
               console.error("Unknown error occurred:", error);
             }
           }
+        }else{
+       navigate("/");
         }
       };
   

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import "./form.css";
+import Spinner from 'react-bootstrap/Spinner';
 function EmailBox() {
   const [emailData, setEmailData] = useState({
     to: '',
@@ -18,7 +19,7 @@ function EmailBox() {
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
-      if (!token) navigate("/EmployeeLogin");
+     
       if (token) {
         try {
           // Send a request to the backend to validate the token
@@ -60,7 +61,9 @@ function EmailBox() {
             console.error("Unknown error occurred:", error);
           }
         }
-      }
+      }else{
+        navigate("/");
+         }
     };
 
     userLoggedIn();
@@ -148,9 +151,10 @@ function EmailBox() {
     
   };
   return (
-    <div className="container" >
+   <>
+  <div className="container" >
       <div className="row" style={{ width: '80%' }}>
-        <div className="col-md-12" >
+        <div className="col-md-12 " >
           <div className="form-group" >
             <label htmlFor="to">To:</label>
             <input
@@ -182,43 +186,51 @@ function EmailBox() {
               style={{ width: '100%', minHeight: '150px' }}
             ></textarea>
           </div>
-          <div className="form-group">
-            <label htmlFor="month">Select Month:</label>
-            <select
-              id="month"
-              className="form-control"
-              value={selectedMonth}
-              onChange={handleMonthChange}
-            >
-              <option value="">All Months</option>
-              {months.map((month, index) => (
-                <option key={index} value={month}>{month}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="status">Select Status:</label>
-            <select
-              id="status"
-              className="form-control"
-              value={selectedStatus}
-              onChange={handleStatusChange}
-            >
-              <option value="">All Statuses</option>
-              {statuses.map((status, index) => (
-                <option key={index} value={status}>{status}</option>
-              ))}
-            </select>
-          </div>
+          <div className="form-row">
+  <div className="form-group col-md-6 col-lg-6">
+    <label htmlFor="month">Select Month:</label>
+    <select
+      id="month"
+      className="form-control"
+      style={{width:"90%"}}
+      value={selectedMonth}
+      onChange={handleMonthChange}
+    >
+      <option value="">All Months</option>
+      {months.map((month, index) => (
+        <option key={index} value={month}>{month}</option>
+      ))}
+    </select>
+  </div>
+  <div className="form-group col-md-6 col-lg-6">
+    <label htmlFor="status">Select Status:</label>
+    <select
+      id="status"
+      className="form-control w-90"
+      value={selectedStatus}
+      style={{width:"90%"}}
+      onChange={handleStatusChange}
+    >
+      <option value="">All Statuses</option>
+      {statuses.map((status, index) => (
+        <option key={index} value={status}>{status}</option>
+      ))}
+    </select>
+  </div>
+
+
+</div>
+
         </div>
+          
+
       </div>
-      <div className="row">
-        <div className="col-md-12">
-          <button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>
-          {isLoading && <div>Loading...</div>}
-        </div>
-      </div>
+  
+      {isLoading ? <button className="btn btn-primary  mt-5" ><Spinner animation="border" variant="variant" /></button> :<button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>}
+
     </div>
+   </> 
+    
   );
 }
 

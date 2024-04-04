@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate ,Link} from "react-router-dom";
-
+import "./form.css";
+import Spinner from 'react-bootstrap/Spinner';
 function Schedule() {
   const [data, setData] = useState([]);
   const [editData, setEditData] = useState(null);
@@ -80,7 +81,7 @@ function Schedule() {
       const token = localStorage.getItem("usersdatatoken");
     
   
-      if (!token) navigate("/EmployeeLogin");
+     
       if (token) {
         try {
           // Send a request to the backend to validate the token
@@ -122,7 +123,9 @@ function Schedule() {
             console.error("Unknown error occurred:", error);
           }
         }
-      }
+      }else{
+        navigate("/");
+         }
     };
 
     userLoggedIn();
@@ -134,175 +137,182 @@ function Schedule() {
   };
   return (
     
-
-    <div className="dashboard-content w-100" style={{ overflowY: "auto" }}>
-    <div className=" container-fluid" >
-      <Link
-        to="/scheduleform"
-        className="btn btn-success btn-floating"
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          padding: "10px 20px",
-          borderRadius: "50%",
-          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-          fontSize: "24px",
-          backgroundColor: "#28a745", // Green color
-          border: "none",
-          color: "white",
-          zIndex: "1",
-        }}
-      >
-        +
-      </Link>
-      <div className="row" >
-        <div className="col-md-12" >
-        <div className="table-container"  style={{ maxHeight: "400px", overflowY: "auto" }}>
-       
-        <table className="table mx-auto"  >
-        <colgroup>
-      <col style={{ width: "10%" }} /> {/* Adjust the width as needed */}
-      <col style={{ width: "10%" }} />
-      <col style={{ width: "10%" }} />
-      <col style={{ width: "10%" }} />
-      <col style={{ width: "10%" }} />
-      <col style={{ width: "10%" }} />
-      <col style={{ width: "10%" }} /> {/* Adjust the width as needed */}
-    </colgroup>
-  <thead>
-    <tr>
-      <th className="th-sm">Interviewer</th>
-      <th >Interviewer Email</th>
-      <th >Recipient </th>
-      <th >Recipient Email</th>
-      <th >Meet Link</th>
-      <th >Time</th>
-      <th >Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {data.map((item) => (
-      <tr key={item._id}>
-        <td >
-          {isEditing && editData === item ? (
-            <input
-              type="text"
-              style={{ width: "100%" }}
-              value={formData.interviewerName}
-              onChange={(e) => handleInputChange(e, "interviewerName")}
-            />
-          ) : (
-            <span>{truncateText(item.interviewerName, 20)}</span>
-            
-          )}
-        </td>
-        <td>
-          {isEditing && editData === item ? (
-            <input
-              type="email"
-              style={{ width: "100%" }}
-              value={formData.interviewerEmail}
-              onChange={(e) => handleInputChange(e, "interviewerEmail")}
-            />
-          ) : (
-            <span>{truncateText(item.interviewerEmail, 20)}</span>
-          )}
-        </td>
-        <td style={{ padding: '10px' }}>
-          {isEditing && editData === item ? (
-            <input
-              type="text"
-              style={{ width: "100%" }}
-              value={formData.recipientName}
-              onChange={(e) => handleInputChange(e, "recipientName")}
-            />
-          ) : (
-            <span>{truncateText(item.recipientName, 20)}</span>
-          )}
-        </td>
-        <td style={{ padding: '10px' }}>
-          {isEditing && editData === item ? (
-            <input
-              type="email"
-              style={{ width: "100%" }}
-              value={formData.recipientEmail}
-              onChange={(e) => handleInputChange(e, "recipientEmail")}
-            />
-          ) : (
-            <span>{truncateText(item.recipientEmail, 20)}</span>
-          )}
-        </td>
-        <td style={{ padding: '10px' }}>
-          {isEditing && editData === item ? (
-            <input
-              type="text"
-              style={{ width: "100%" }}
-              value={formData.meetLink}
-              onChange={(e) => handleInputChange(e, "meetLink")}
-            />
-          ) : (
-            <span>{truncateText(item.meetLink, 20)}</span>
-          )}
-        </td>
-        <td style={{ padding: '10px' }}>
-          {isEditing && editData === item ? (
-            <input
-              type="datetime-local"
-              style={{ width: "100%" }}
-              value={formData.scheduledTime}
-              onChange={(e) => handleInputChange(e, "scheduledTime")}
-            />
-          ) : (
-            <span>{truncateText(item.scheduledTime, 20)}</span>
-          )}
-        </td>
-        <td style={{ padding: '10px' }}>
-          {isEditing && editData === item ? (
-            <>
-              <button
-                style={{ marginRight: "10px" }}
-                className="btn btn-danger"
-                onClick={handleCancel}
-              >
-                <i className="bi bi-x-lg"></i> 
-              </button>
-              <button className="btn btn-success" onClick={handleUpdate}>
-                <i className="bi bi-upload"></i> 
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                style={{ marginRight: "10px" }}
-                className="btn btn-primary"
-                onClick={() => handleEdit(item)}
-              >
-                <i className="bi bi-pencil-square"></i>
-              </button>
-              <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>
-              <i className="bi bi-trash3"></i>
-              </button>
-            </>
-          )}
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-</div>
-
-          {isLoading && (
-            <div class="spinner-border text-primary" role="status">
-              <span class="sr-only">Loading...</span>
+<>
+{isLoading ?    <div className='spinner'> <Spinner
+          as="span"
+          animation="grow"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        
+        /> </div>:
+        <div className="dashboard-content w-100" style={{ overflowY: "auto" }}>
+        <div className=" container-fluid" >
+          <Link
+            to="/scheduleform"
+            className="btn btn-success btn-floating"
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              padding: "10px 20px",
+              borderRadius: "50%",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              fontSize: "24px",
+              backgroundColor: "#28a745", // Green color
+              border: "none",
+              color: "white",
+              zIndex: "1",
+            }}
+          >
+            +
+          </Link>
+          <div className="row" >
+            <div className="col-md-12" >
+            <div className="table-container"  style={{ maxHeight: "400px", overflowY: "auto" }}>
+           
+            <table className="table mx-auto"  >
+            <colgroup>
+          <col style={{ width: "10%" }} /> {/* Adjust the width as needed */}
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} /> {/* Adjust the width as needed */}
+        </colgroup>
+      <thead>
+        <tr>
+          <th className="th-sm">Interviewer</th>
+          <th >Interviewer Email</th>
+          <th >Recipient </th>
+          <th >Recipient Email</th>
+          <th >Meet Link</th>
+          <th >Time</th>
+          <th >Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item) => (
+          <tr key={item._id}>
+            <td >
+              {isEditing && editData === item ? (
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={formData.interviewerName}
+                  onChange={(e) => handleInputChange(e, "interviewerName")}
+                />
+              ) : (
+                <span>{truncateText(item.interviewerName, 20)}</span>
+                
+              )}
+            </td>
+            <td>
+              {isEditing && editData === item ? (
+                <input
+                  type="email"
+                  style={{ width: "100%" }}
+                  value={formData.interviewerEmail}
+                  onChange={(e) => handleInputChange(e, "interviewerEmail")}
+                />
+              ) : (
+                <span>{truncateText(item.interviewerEmail, 20)}</span>
+              )}
+            </td>
+            <td style={{ padding: '10px' }}>
+              {isEditing && editData === item ? (
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={formData.recipientName}
+                  onChange={(e) => handleInputChange(e, "recipientName")}
+                />
+              ) : (
+                <span>{truncateText(item.recipientName, 20)}</span>
+              )}
+            </td>
+            <td style={{ padding: '10px' }}>
+              {isEditing && editData === item ? (
+                <input
+                  type="email"
+                  style={{ width: "100%" }}
+                  value={formData.recipientEmail}
+                  onChange={(e) => handleInputChange(e, "recipientEmail")}
+                />
+              ) : (
+                <span>{truncateText(item.recipientEmail, 20)}</span>
+              )}
+            </td>
+            <td style={{ padding: '10px' }}>
+              {isEditing && editData === item ? (
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={formData.meetLink}
+                  onChange={(e) => handleInputChange(e, "meetLink")}
+                />
+              ) : (
+                <span>{truncateText(item.meetLink, 20)}</span>
+              )}
+            </td>
+            <td style={{ padding: '10px' }}>
+              {isEditing && editData === item ? (
+                <input
+                  type="datetime-local"
+                  style={{ width: "100%" }}
+                  value={formData.scheduledTime}
+                  onChange={(e) => handleInputChange(e, "scheduledTime")}
+                />
+              ) : (
+                <span>{truncateText(item.scheduledTime, 20)}</span>
+              )}
+            </td>
+            <td style={{ padding: '10px' }}>
+              {isEditing && editData === item ? (
+                <>
+                  <button
+                    style={{ marginRight: "10px" }}
+                    className="btn btn-danger"
+                    onClick={handleCancel}
+                  >
+                    <i className="bi bi-x-lg"></i> 
+                  </button>
+                  <button className="btn btn-success" onClick={handleUpdate}>
+                    <i className="bi bi-upload"></i> 
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    style={{ marginRight: "10px" }}
+                    className="btn btn-primary"
+                    onClick={() => handleEdit(item)}
+                  >
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>
+                  <i className="bi bi-trash3"></i>
+                  </button>
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    
+    </div>
+    
+           
             </div>
-          )}
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  );
+}
+</>
+  
+              );
   
 }
 

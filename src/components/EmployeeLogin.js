@@ -59,7 +59,9 @@ function EmployeeLogin() {
             console.error("Unknown error occurred:", error);
           }
         }
-      }
+      }else{
+        navigate("/");
+         }
     };
 
     userLoggedIn();

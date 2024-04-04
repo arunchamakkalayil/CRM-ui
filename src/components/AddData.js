@@ -19,7 +19,7 @@ function AddData() {
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
-      if (!token) navigate("/EmployeeLogin");
+      
   
    
       if (token) {
@@ -63,7 +63,9 @@ function AddData() {
             console.error("Unknown error occurred:", error);
           }
         }
-      }
+      }else{
+        navigate("/");
+         }
     };
 
     userLoggedIn();
