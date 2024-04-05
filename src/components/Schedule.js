@@ -185,12 +185,9 @@ function Schedule() {
           />
         </div>
       ) : (
-
-
             <div className="row">
               <div className="col-md-12">
                 <div className="table-container" style={{ overflowY: "auto", borderRadius: "15px", marginTop: "10px" }}>
-
                   <table className="table mx-auto">
                     <thead>
                       <tr>

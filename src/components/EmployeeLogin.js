@@ -8,17 +8,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import 'lord-icon-element'; 
+import { Triangle } from "react-loader-spinner";
 function EmployeeLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false); // Loader state
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
 
       if (token) {
+        setIsLoading(true)
         try {
           // Send a request to the backend to validate the token
           const response = await axios.post(
@@ -58,6 +60,8 @@ function EmployeeLogin() {
             // Something else went wrong
             console.error("Unknown error occurred:", error);
           }
+        }finally{
+          setIsLoading(false)
         }
       }else{
         navigate("/");
@@ -92,6 +96,7 @@ function EmployeeLogin() {
     if (!validateForm()) {
       return;
     }
+    setIsLoading(true); // Show loader
 
 
     try {
@@ -119,12 +124,15 @@ function EmployeeLogin() {
         console.error("Error:", error);
         setErrorMessage("Something went wrong");
       }
+    }finally {
+      setIsLoading(false); // Hide loader
     }
   };
 
   return (
    <div className="m-4 w-100 d-flex justify-content-center align-items-center ">
-   <div className="container col-md-5 col-lg-6 col-xl-3 col-sm-8 m-auto d-flex justify-content-center align-items-center  p-4 rounded">
+
+    {isLoading ? <Triangle />: <div className="container col-md-5 col-lg-6 col-xl-3 col-sm-8 m-auto d-flex justify-content-center align-items-center  p-4 rounded">
   <div className="logo">
   <lord-icon
     src="https://cdn.lordicon.com/lhwyshcs.json"
@@ -183,7 +191,8 @@ function EmployeeLogin() {
       </span>
     </p>
 
-</div>
+</div>}
+  
   
 </div>
   
