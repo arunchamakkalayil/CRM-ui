@@ -152,7 +152,14 @@ function EmailBox() {
   };
   return (
    <>
-  <div className="container" >
+   {isLoading ?  <div className='spinner'>  <Spinner
+          as="span"
+          animation="grow"
+          size="lg"
+          role="status"
+          aria-hidden="true"
+          className='spinner text-primary'
+        /> </div>:<div className="container" >
       <div className="row" style={{ width: '80%' }}>
         <div className="col-md-12 " >
           <div className="form-group" >
@@ -228,7 +235,7 @@ function EmailBox() {
   
       {isLoading ? <button className="btn btn-primary  mt-5" ><Spinner animation="border" variant="variant" /></button> :<button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>}
 
-    </div>
+    </div>}
    </> 
     
   );

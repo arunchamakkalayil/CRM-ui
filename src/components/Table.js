@@ -5,6 +5,8 @@ import {  Link } from "react-router-dom";
 import "./css/table.css";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmationModal from "./DeleteConfirmationModal"; // Import the modal component
+
 function Table(props) {
   console.log(props)
 
@@ -20,6 +22,10 @@ function Table(props) {
     status:"",
     month: "" // Added month field
   });
+
+  // State for showing/hiding the confirmation modal
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [itemIdToDelete, setItemIdToDelete] = useState(null);
 
   const handleEdit = (item) => {
     setEditingItemId(item._id);
@@ -66,28 +72,29 @@ function Table(props) {
   };
 
   const handleDelete = (itemId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
+    setItemIdToDelete(itemId); // Set the ID of the item to delete
+    setShowConfirmationModal(true); // Show the confirmation modal
+  };
 
-    if (confirmed) {
-      axios
-        .delete(`${process.env.REACT_APP_URL}/userdata/${itemId}`)
-        .then((response) => {
-          setDelMessage(true);
-          setDelStatus("Deleted Successfully");
-          // Automatically hide the alert after 4 seconds (4000 milliseconds)
-          setTimeout(() => {
-            setDelMessage(false);
-          }, 4000);
+  const confirmDelete = () => {
+    axios
+      .delete(`${process.env.REACT_APP_URL}/userdata/${itemIdToDelete}`)
+      .then((response) => {
+        setDelMessage(true);
+        setDelStatus("Deleted Successfully");
+        // Automatically hide the alert after 4 seconds (4000 milliseconds)
+        setTimeout(() => {
+          setDelMessage(false);
+        }, 4000);
 
-          getData();
-          props.getCount();
-        })
-        .catch((error) => {
-          console.error("Error deleting item:", error);
-        });
-    }
+        getData();
+        props.getCount();
+      })
+      .catch((error) => {
+        console.error("Error deleting item:", error);
+      });
+
+    setShowConfirmationModal(false); // Close the confirmation modal
   };
 
   const getData = async () => {
@@ -209,6 +216,12 @@ function Table(props) {
               >
                 +
               </Link>
+              <DeleteConfirmationModal
+                show={showConfirmationModal}
+                handleClose={() => setShowConfirmationModal(false)}
+                handleDelete={confirmDelete}
+              />
+              
               {delMessage && (
             <div className="alert alert-success" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-check2-circle"> </i>
                   {delStatus}
@@ -220,7 +233,7 @@ function Table(props) {
                 </div>
               )}
 
-<div className="table-container pt-5" style={{ overflowX: "auto" }}>
+<div className="table-container pt-3" style={{ overflowX: "auto" }}>
       <div className="table-responsive px-5">
       <div className="mb-5">
         <input
@@ -245,22 +258,22 @@ function Table(props) {
        <thead className="sticky-header">
        <tr>
   <th className="px-1 th-sm text-left py-3" scope="col">
-    Name
+  <i class="bi bi-people text-primary"> </i> Name
   </th>
   <th className="px-1 th-sm text-left py-3" scope="col">
-    Email
+  <i class="bi bi-envelope text-primary"> </i> Email
   </th>
   <th className="px-1 th-sm text-left py-3" scope="col">
-    Phone
+  <i class="bi bi-telephone text-primary"> </i>Phone
   </th>
   <th className="px-1 th-sm text-left py-3" scope="col">
-    Month
+  <i class="bi bi-calendar4 text-primary"> </i>Month
   </th>
   <th className="px-1 th-sm text-left py-3" scope="col">
-    Status
+  <i class="bi bi-bookmark text-primary"> </i>Status
   </th>
   <th className="px-1 th-s text-left py-3" scope="col">
-    Actions
+  <i class="bi bi-gear-fill text-primary"> </i>Actions
   </th>
 </tr>
 
@@ -342,35 +355,22 @@ function Table(props) {
               <td className="">
                 {editingItemId === item._id ? (
                   <>
-                    <button
-                      style={{ marginRight: "10px" }}
-                      className="btn btn-primary"
-                      onClick={handleUpdate}
-                    >
-                      <i className="bi bi-upload"></i>
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={handleCancelEdit}
-                    >
-                      <i className="bi bi-x-lg"></i>
-                    </button>
+          
+                      <i className="bi bi-upload text-primary p-2" onClick={handleUpdate}></i>
+                
+          
+                      <i className="bi bi-x-lg text-danger p-2"     onClick={handleCancelEdit}></i>
+             
                   </>
                 ) : (
                   <>
-                    <button
-                      style={{ marginRight: "10px" }}
-                      className="btn btn-success"
-                      onClick={() => handleEdit(item)}
-                    >
-                      <i className="bi bi-pencil-square"></i>
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(item._id)}
-                    >
-                      <i className="bi bi-trash3"></i>
-                    </button>
+                   
+                      <i className="bi bi-pencil-square text-primary p-2"       onClick={() => handleEdit(item)}
+></i>
+               
+                  
+                      <i className="bi bi-trash-fill text-danger p-2" onClick={() => handleDelete(item._id)}></i>
+                 
                   </>
                 )}
               </td>
@@ -393,3 +393,4 @@ function Table(props) {
 }
 
 export default Table;
+
