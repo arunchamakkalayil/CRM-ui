@@ -1,18 +1,8 @@
 import React from 'react'
-import { Triangle } from 'react-loader-spinner'
+import "./css/Loader.css"
 function Loader() {
   return (
-    <div>
-      <Triangle
-  visible={true}
-  height="80"
-  width="80"
-  color="#ffff"
-  ariaLabel="triangle-loading"
-  wrapperStyle={{}}
-  wrapperClass=""
-  />
-    </div>
+    <div class="loader"></div>
   )
 }
 

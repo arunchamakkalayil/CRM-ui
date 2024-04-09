@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -9,22 +9,24 @@ import {
 } from 'cdbreact';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import './style.css'
+import { Modal, Button } from 'react-bootstrap'; // Import Bootstrap modal components
+import './style.css';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // State to control modal visibility
 
-  
-   // Function to handle logout
-   const handleLogout = () => {
+  // Function to handle logout with confirmation popup
+  const handleLogout = () => {
     // Clear the user's token from local storage
     localStorage.removeItem("usersdatatoken");
 
     // Navigate to the login page
     navigate("/EmployeeLogin");
   };
+
   return (
-    <div className='shadow' style={{ display: 'flex' ,height:'100vh',overflow: 'scroll initial'}}>
+    <div className='shad' style={{ }}>
       <CDBSidebar textColor="#fff" className='pro-sidebar-footer'>
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/" className="text-decoration-none" style={{ color: "#fff" }}>
@@ -46,26 +48,29 @@ const Sidebar = () => {
             <NavLink exact to="/email" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="inbox">Email</CDBSidebarMenuItem>
             </NavLink>
-
-        
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
         <CDBSidebarFooter style={{ textAlign: 'center' }}>
+          <div style={{ padding: '20px 5px' }}>
 
-         
-          <div
-            style={{
-              padding: '20px 5px',
-            }}
-          >
-            <div onClick={handleLogout}><strong><i class="bi bi-box-arrow-right"></i></strong>
-</div>
-            
-            CRM
+            <strong><i  onClick={() => setShowLogoutModal(true)} className="bi bi-power"></i></strong>
+            <br></br><strong>CRM</strong> <span> V 1.0</span>
           </div>
         </CDBSidebarFooter>
       </CDBSidebar>
+
+      {/* Bootstrap modal for logout confirmation */}
+      <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Logout Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to log out?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={handleLogout}>Logout</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
