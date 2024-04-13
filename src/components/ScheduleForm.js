@@ -3,16 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './form.css'; // Import the common styles
 import axios from 'axios';
-
+import { Alert } from 'react-bootstrap';
 export default function ScheduleForm() {
-  // const location = useLocation();
-  // const [editData, setEditData] = useState(location.state?.editData || {});
+
   const [interviewerName, setInterviewerName] = useState('');
   const [interviewerEmail, setInterviewerEmail] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const [recipientEmail, setRecipientEmail] = useState('');
   const [meetLink, setMeetLink] = useState('');
   const [scheduledTime, setScheduledTime] = useState('');
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [failureAlert, setFailureAlert] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const userLoggedIn = async () => {
@@ -70,18 +71,7 @@ export default function ScheduleForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // try {
-    //   // Format the scheduledTime before sending it to the server
-    //   const formattedScheduledTime = new Date(scheduledTime).toLocaleString('en-US', {
-    //     month: 'numeric',
-    //     day: 'numeric',
-    //     year: 'numeric',
-    //     hour: 'numeric',
-    //     minute: 'numeric',
-    //     second: 'numeric',
-    //     hour12: true,
-    //   });
-
+    try {
       const response = await axios.post(`${process.env.REACT_APP_URL}/scheduleform`, {
         interviewerName,
         interviewerEmail,
@@ -91,27 +81,45 @@ export default function ScheduleForm() {
         scheduledTime: scheduledTime,
       });
 
-      // Handle the response if needed
-      alert('Saved successfully');
-      console.log('Form submitted successfully:', response.data);
-    // } catch (error) {
-    //   // Handle errors
-    //   console.error('Error during form submission:', error);
-    // }
+      setSuccessAlert(true);
+      setTimeout(() => {
+        setSuccessAlert(false);
+      }, 5000);
 
-    // Reset the form fields after submission
-    setInterviewerName('');
-    setInterviewerEmail('');
-    setRecipientName('');
-    setRecipientEmail('');
-    setMeetLink('');
-    setScheduledTime('');
+      console.log('Form submitted successfully:', response.data);
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      setFailureAlert(true);
+      setTimeout(() => {
+        setFailureAlert(false);
+      }, 5000);
+    } finally {
+      // Reset the form fields after submission
+      setInterviewerName('');
+      setInterviewerEmail('');
+      setRecipientName('');
+      setRecipientEmail('');
+      setMeetLink('');
+      setScheduledTime('');
+    }
   };
 
   return (
     <div className="container mt-5">
     <h2 className="text-center">Schedule Meetings</h2>
     <form onSubmit={handleSubmit} className="form" method='post'>
+    <div className="message-container">
+    {successAlert && (
+          <Alert variant="success" onClose={() => setSuccessAlert(false)} >
+            Scheduled successfully!
+          </Alert>
+        )}</div>
+         <div className="message-container">
+        {failureAlert && (
+          <Alert variant="danger" onClose={() => setFailureAlert(false)} >
+            Failed to Schedule Meeting
+          </Alert>
+        )}</div>
       <div className="row">
         <div className="col-md-6">
           <div className="form-group">

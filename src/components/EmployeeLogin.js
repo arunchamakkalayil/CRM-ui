@@ -165,6 +165,10 @@ function EmployeeLogin() {
             </div>
           </form>
           <br />
+    
+          <div className="text-center fontstyle">
+            <Link to="/forgotpassword">Forgot Password?</Link>
+          </div>
           <p className="text-center fontstyle">
             Create an account{" "}
             <span>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import "./form.css";
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
+import "./form.css";
+
 function EmailBox() {
   const [emailData, setEmailData] = useState({
     to: '',
@@ -13,16 +15,18 @@ function EmailBox() {
   const [isLoading, setIsLoading] = useState(false);
   const [leadsEmails, setLeadsEmails] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [failureAlert, setFailureAlert] = useState(false);
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const statuses = ['Closed', 'Not_Connected', 'Pending', 'Lost'];
   const navigate = useNavigate();
+
   useEffect(() => {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
      
       if (token) {
         try {
-          // Send a request to the backend to validate the token
           const response = await axios.post(
             `${process.env.REACT_APP_URL}/validateToken`,
             {},
@@ -34,45 +38,24 @@ function EmailBox() {
           );
 
           if (response.status === 200) {
-            // Token is valid, navigate to the dashboard
             navigate("/email");
           } else {
-            // Handle unexpected response status codes
             console.error("Unexpected response status:", response.status);
           }
         } catch (error) {
-          // Handle errors in a more specific way
-          if (axios.isCancel(error)) {
-            // Request was canceled
-            console.error("Request was canceled:", error);
-          } else if (error.response) {
-            // Server responded with an error status code
-            if (error.response.status === 401) {
-              // Unauthorized, token is invalid
-              console.error("Token is invalid");
-            } else {
-              console.error("Server error:", error.response.data);
-            }
-          } else if (error.request) {
-            // Request was made but no response was received
-            console.error("No response received:", error.request);
-          } else {
-            // Something else went wrong
-            console.error("Unknown error occurred:", error);
-          }
+          console.error("Error occurred:", error);
         }
-      }else{
+      } else {
         navigate("/");
-         }
+      }
     };
 
     userLoggedIn();
     const fetchLeadsEmails = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/userdata`); // Adjust the endpoint URL
+        const response = await axios.get(`${process.env.REACT_APP_URL}/userdata`);
         const leads = response.data.data;
-        // const emails = leads.map(lead => lead.email);
         setLeadsEmails(leads);
       } catch (error) {
         console.error('Error fetching leads:', error);
@@ -93,26 +76,40 @@ function EmailBox() {
 
   const handleSendEmail = async () => {
     try {
-      // Perform email sending logic here using Axios or any other method
-      console.log('Email data:', emailData);
-      // Example: Send email using Axios
-      await axios.post(`${process.env.REACT_APP_URL}/email`, {
+      setIsLoading(true);
+      const response = await axios.post(`${process.env.REACT_APP_URL}/email`, {
         ...emailData,
         to: emailData.to.split(','),
       });
-      // Reset form after sending
+  
       setEmailData({
         to: '',
         subject: '',
         body: ''
       });
-      alert('Email sent successfully!');
+  
+      if (response.status === 200) {
+        setSuccessAlert(true);
+        setTimeout(() => {
+          setSuccessAlert(false);
+        }, 5000);
+      } else {
+        setFailureAlert(true);
+        setTimeout(() => {
+          setFailureAlert(false);
+        }, 5000);
+      }
     } catch (error) {
       console.error('Error sending email:', error);
-      alert('Failed to send email. Please try again.');
+      setFailureAlert(true);
+      setTimeout(() => {
+        setFailureAlert(false);
+      }, 5000);
+    } finally {
+      setIsLoading(false);
     }
   };
-
+  
   const handleMonthChange = (e) => {
     const selectedMonth = e.target.value;
     setSelectedMonth(selectedMonth);
@@ -122,13 +119,10 @@ function EmailBox() {
   const handleStatusChange = (e) => {
     const selectedStatus = e.target.value;
     setSelectedStatus(selectedStatus);
-    filterData(selectedMonth, selectedStatus); // Call filterData to update emailData.to
+    filterData(selectedMonth, selectedStatus);
   };
 
   const filterData = (month, status) => {
-    console.log('Filtering data');
-  console.log('Selected Month:', month);
-  console.log('Selected Status:', status);
     let filteredLeads = leadsEmails;
    
     if (month) {
@@ -138,28 +132,28 @@ function EmailBox() {
       filteredLeads = filteredLeads.filter(lead => lead.status.toLowerCase() === status.toLowerCase());
     }
   
-    console.log('Filtered Leads:', filteredLeads);
-  
     const emailList = filteredLeads.map(lead => lead.email).join(',');
     setEmailData({
       ...emailData,
       to: emailList
     });
-  
-    console.log('Filtered Email List:', emailList);
-  
-    
   };
+
   return (
    <>
-   {isLoading ?  <div className='spinner'>  <Spinner
-          as="span"
-          animation="grow"
-          size="lg"
-          role="status"
-          aria-hidden="true"
-          className='spinner text-primary'
-        /> </div>:<div className="container" >
+   {isLoading ?  
+   <div className='spinner'>  
+      <Spinner
+        as="span"
+        animation="grow"
+        size="lg"
+        role="status"
+        aria-hidden="true"
+        className='spinner text-primary'
+      />
+    </div> 
+    :
+    <div className="container" >
       <div className="row" style={{ width: '80%' }}>
         <div className="col-md-12 " >
           <div className="form-group" >
@@ -170,6 +164,7 @@ function EmailBox() {
               className="form-control"
               value={emailData.to}
               style={{ width: '100%', minHeight: '50px' }}
+              required
             />
           </div>
           <div className="form-group">
@@ -181,6 +176,7 @@ function EmailBox() {
               value={emailData.subject}
               onChange={(e) => handleInputChange(e, 'subject')}
               style={{ width: '100%', minHeight: '60px' }}
+              required
             />
           </div>
           <div className="form-group">
@@ -191,51 +187,58 @@ function EmailBox() {
               value={emailData.body}
               onChange={(e) => handleInputChange(e, 'body')}
               style={{ width: '100%', minHeight: '150px' }}
+              required
             ></textarea>
           </div>
           <div className="form-row">
-  <div className="form-group col-md-6 col-lg-6">
-    <label htmlFor="month">Select Month:</label>
-    <select
-      id="month"
-      className="form-control"
-      style={{width:"90%"}}
-      value={selectedMonth}
-      onChange={handleMonthChange}
-    >
-      <option value="">All Months</option>
-      {months.map((month, index) => (
-        <option key={index} value={month}>{month}</option>
-      ))}
-    </select>
-  </div>
-  <div className="form-group col-md-6 col-lg-6">
-    <label htmlFor="status">Select Status:</label>
-    <select
-      id="status"
-      className="form-control w-90"
-      value={selectedStatus}
-      style={{width:"90%"}}
-      onChange={handleStatusChange}
-    >
-      <option value="">All Statuses</option>
-      {statuses.map((status, index) => (
-        <option key={index} value={status}>{status}</option>
-      ))}
-    </select>
-  </div>
-
-
-</div>
-
+            <div className="form-group col-md-6 col-lg-6">
+              <label htmlFor="month">Select Month:</label>
+              <select
+                id="month"
+                className="form-control"
+                style={{width:"90%"}}
+                value={selectedMonth}
+                onChange={handleMonthChange}
+              >
+                <option value="">All Months</option>
+                {months.map((month, index) => (
+                  <option key={index} value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group col-md-6 col-lg-6">
+              <label htmlFor="status">Select Status:</label>
+              <select
+                id="status"
+                className="form-control w-90"
+                value={selectedStatus}
+                style={{width:"90%"}}
+                onChange={handleStatusChange}
+              >
+                <option value="">All Statuses</option>
+                {statuses.map((status, index) => (
+                  <option key={index} value={status}>{status}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
-          
-
       </div>
-  
-      {isLoading ? <button className="btn btn-primary  mt-5" ><Spinner animation="border" variant="variant" /></button> :<button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>}
-
-    </div>}
+      <div className="message-container">
+      {successAlert && (
+        <Alert variant="success" onClose={() => setSuccessAlert(false)} >
+          Email sent successfully!
+        </Alert>
+      )}</div>
+       <div className="message-container">
+      {failureAlert && (
+        <Alert variant="danger" onClose={() => setFailureAlert(false)} >
+          Failed to send email. Please try again.
+        </Alert>
+      )}</div>
+      <button className="btn btn-primary px-5 mt-5" style={{}} onClick={handleSendEmail}>Send</button>
+    </div>
+   }
    </> 
     
   );

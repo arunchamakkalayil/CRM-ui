@@ -5,8 +5,8 @@ import {  Link } from "react-router-dom";
 import "./css/table.css";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
-import DeleteConfirmationModal from "./DeleteConfirmationModal"; // Import the modal component
-
+import DeleteConfirmationModal from "./DeleteConfirmationModal"; 
+import Loader from "./Loader"
 function Table(props) {
   console.log(props)
 
@@ -26,7 +26,7 @@ function Table(props) {
   // State for showing/hiding the confirmation modal
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false); // Loader state
   const handleEdit = (item) => {
     setEditingItemId(item._id);
     setEditedItem(item);
@@ -39,6 +39,7 @@ function Table(props) {
 
   const handleUpdate = async () => {
     try {
+      setIsLoading(true); // Show loader
       const response = await axios.put(
         `${process.env.REACT_APP_URL}/userdata/${editingItemId}`,
         editedItem
@@ -68,6 +69,8 @@ function Table(props) {
       } else {
         console.error(error);
       }
+    }finally {
+      setIsLoading(false); // Hide loader
     }
   };
 
@@ -94,11 +97,12 @@ function Table(props) {
         console.error("Error deleting item:", error);
       });
 
-    setShowConfirmationModal(false); // Close the confirmation modal
+    setShowConfirmationModal(false); 
   };
 
   const getData = async () => {
     try {
+      setIsLoading(true); // Show loader
       const response = await axios.get(`${process.env.REACT_APP_URL}/userdata`);
 
       // Ensure response.data.data is an array
@@ -109,6 +113,8 @@ function Table(props) {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    }finally {
+      setIsLoading(false); // Hide loader
     }
   };
 
@@ -116,7 +122,9 @@ function Table(props) {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
       if (token) {
+
         try {
+          setIsLoading(true); // Show loader
           // Send a request to the backend to validate the token
           const response = await axios.post(
             `${process.env.REACT_APP_URL}/validateToken`,
@@ -156,6 +164,8 @@ function Table(props) {
             // Something else went wrong
             console.error("Unknown error occurred:", error);
           }
+        }finally {
+          setIsLoading(false); // Hide loader
         }
       }else{
         navigate("/");
@@ -195,197 +205,198 @@ function Table(props) {
   };
 
   return (
-
-<div className="d-flex flex-column shadow" style={{width:"75%",margin:"auto",borderRadius:"10px",backgroundColor:"#fff"}}>
-      <Link
-                to="/create"
-                className="btn btn-success btn-floating"
-                style={{
-                  position: "fixed",
-                  bottom: "20px",
-                  right: "20px",
-                  padding: "10px 20px",
-                  borderRadius: "50%",
-                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                  fontSize: "24px",
-                  backgroundColor: "#28a745", // Green color
-                  border: "none",
-                  color: "white",
-                  zIndex:"1"
-                }}
-              >
-                +
-              </Link>
-              <DeleteConfirmationModal
-                show={showConfirmationModal}
-                handleClose={() => setShowConfirmationModal(false)}
-                handleDelete={confirmDelete}
-              />
-              
-              {delMessage && (
-            <div className="alert alert-success" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-check2-circle"> </i>
-                  {delStatus}
-                </div>
-              )}
-              {errVisible && (
-                <div className="alert alert-danger" role="alert">
-                  {error}
-                </div>
-              )}
+    <>{isLoading ? <Loader />:<div className="d-flex flex-column shadow" style={{width:"75%",margin:"auto",borderRadius:"10px",backgroundColor:"#fff"}}>
+    <Link
+              to="/create"
+              className="btn btn-success btn-floating"
+              style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                padding: "10px 20px",
+                borderRadius: "50%",
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                fontSize: "24px",
+                backgroundColor: "#28a745", // Green color
+                border: "none",
+                color: "white",
+                zIndex:"1"
+              }}
+            >
+              +
+            </Link>
+            <DeleteConfirmationModal
+              show={showConfirmationModal}
+              handleClose={() => setShowConfirmationModal(false)}
+              handleDelete={confirmDelete}
+            />
+            
+            {delMessage && (
+          <div className="alert alert-success" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-check2-circle"> </i>
+                {delStatus}
+              </div>
+            )}
+            {errVisible && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
 
 <div className="table-container pt-3" style={{ overflowX: "auto" }}>
-      <div className="table-responsive px-5">
-      <div className="mb-5">
-        <input
-          type="text"
-          id="form-control"
-          className="form-control"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-         <button className="btn btn-primary m-2" onClick={exportToExcel}>
-      Export
-    </button>
-      </div>
-      <table
-        id="dtBasicExample"
-        className="table table-sm table-border-3"
-        cellSpacing="0"
-        width="100%"
-        
-      >  
-       <thead className="sticky-header">
-       <tr>
-  <th className="px-1 th-sm text-left py-3" scope="col">
-  <i class="bi bi-people text-primary"> </i> Name
-  </th>
-  <th className="px-1 th-sm text-left py-3" scope="col">
-  <i class="bi bi-envelope text-primary"> </i> Email
-  </th>
-  <th className="px-1 th-sm text-left py-3" scope="col">
-  <i class="bi bi-telephone text-primary"> </i>Phone
-  </th>
-  <th className="px-1 th-sm text-left py-3" scope="col">
-  <i class="bi bi-calendar4 text-primary"> </i>Month
-  </th>
-  <th className="px-1 th-sm text-left py-3" scope="col">
-  <i class="bi bi-bookmark text-primary"> </i>Status
-  </th>
-  <th className="px-1 th-s text-left py-3" scope="col">
-  <i class="bi bi-gear-fill text-primary"> </i>Actions
-  </th>
+    <div className="table-responsive px-5">
+    <div className="mb-5">
+      <input
+        type="text"
+        id="form-control"
+        className="form-control"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+       <button className="btn btn-primary m-2" onClick={exportToExcel}>
+    Export
+  </button>
+    </div>
+    <table
+      id="dtBasicExample"
+      className="table table-sm table-border-3"
+      cellSpacing="0"
+      width="100%"
+      
+    >  
+     <thead className="sticky-header">
+     <tr>
+<th className="px-1 th-sm text-left py-3" scope="col">
+<i class="bi bi-people text-primary"> </i> Name
+</th>
+<th className="px-1 th-sm text-left py-3" scope="col">
+<i class="bi bi-envelope text-primary"> </i> Email
+</th>
+<th className="px-1 th-sm text-left py-3" scope="col">
+<i class="bi bi-telephone text-primary"> </i>Phone
+</th>
+<th className="px-1 th-sm text-left py-3" scope="col">
+<i class="bi bi-calendar4 text-primary"> </i>Month
+</th>
+<th className="px-1 th-sm text-left py-3" scope="col">
+<i class="bi bi-bookmark text-primary"> </i>Status
+</th>
+<th className="px-1 th-s text-left py-3" scope="col">
+<i class="bi bi-gear-fill text-primary"> </i>Actions
+</th>
 </tr>
 
-        </thead>
-        <tbody >
-        {filteredData.map((item) => (
-            <tr key={item._id}>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <input 
-                    type="text"
-                  
-                    value={editedItem.name}
-                    onChange={(e) =>
-                      setEditedItem({ ...editedItem, name: e.target.value })
-                    }
-                  />
-                ) : (
-                  item.name
-                )}
-              </td>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <input
-                    type="text"
-                    value={editedItem.email}
-                    onChange={(e) =>
-                      setEditedItem({ ...editedItem, email: e.target.value })
-                    }
-                  />
-                ) : (
-                  item.email
-                )}
-              </td>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <input
-                    type="text"
-                    value={editedItem.phone}
-                    onChange={(e) =>
-                      setEditedItem({ ...editedItem, phone: e.target.value })
-                    }
-                  />
-                ) : (
-                  item.phone
-                )}
-              </td>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <input
-                    type="text"
-                    value={editedItem.month}
-                    onChange={(e) =>
-                      setEditedItem({ ...editedItem, month: e.target.value })
-                    }
-                  />
-                ) : (
-                  item.month
-                )}
-              </td>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <select
-                    value={editedItem.status}
-                    onChange={(e) =>
-                      setEditedItem({ ...editedItem, status: e.target.value })
-                    }
-                  >
-                    <option value="closed">Closed</option>
-                    <option value="pending">Pending</option>
-                    <option value="lost">Lost</option>
-                    <option value="not_connected">Not Connected</option>
-          
-                  </select>
-                ) : (
-                  item.status
-                )}
-              </td>
-              <td className="">
-                {editingItemId === item._id ? (
-                  <>
-          
-                      <i className="bi bi-upload text-primary p-2" onClick={handleUpdate}></i>
+      </thead>
+      <tbody >
+      {filteredData.map((item) => (
+          <tr key={item._id}>
+            <td className="">
+              {editingItemId === item._id ? (
+                <input 
+                  type="text"
                 
-          
-                      <i className="bi bi-x-lg text-danger p-2"     onClick={handleCancelEdit}></i>
-             
-                  </>
-                ) : (
-                  <>
-                   
-                      <i className="bi bi-pencil-square text-primary p-2"       onClick={() => handleEdit(item)}
-></i>
-               
-                  
-                      <i className="bi bi-trash-fill text-danger p-2" onClick={() => handleDelete(item._id)}></i>
-                 
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-
-      
-      </table>
-
+                  value={editedItem.name}
+                  onChange={(e) =>
+                    setEditedItem({ ...editedItem, name: e.target.value })
+                  }
+                />
+              ) : (
+                item.name
+              )}
+            </td>
+            <td className="">
+              {editingItemId === item._id ? (
+                <input
+                  type="text"
+                  value={editedItem.email}
+                  onChange={(e) =>
+                    setEditedItem({ ...editedItem, email: e.target.value })
+                  }
+                />
+              ) : (
+                item.email
+              )}
+            </td>
+            <td className="">
+              {editingItemId === item._id ? (
+                <input
+                  type="text"
+                  value={editedItem.phone}
+                  onChange={(e) =>
+                    setEditedItem({ ...editedItem, phone: e.target.value })
+                  }
+                />
+              ) : (
+                item.phone
+              )}
+            </td>
+            <td className="">
+              {editingItemId === item._id ? (
+                <input
+                  type="text"
+                  value={editedItem.month}
+                  onChange={(e) =>
+                    setEditedItem({ ...editedItem, month: e.target.value })
+                  }
+                />
+              ) : (
+                item.month
+              )}
+            </td>
+            <td className="">
+              {editingItemId === item._id ? (
+                <select
+                  value={editedItem.status}
+                  onChange={(e) =>
+                    setEditedItem({ ...editedItem, status: e.target.value })
+                  }
+                >
+                  <option value="closed">Closed</option>
+                  <option value="pending">Pending</option>
+                  <option value="lost">Lost</option>
+                  <option value="not_connected">Not Connected</option>
+        
+                </select>
+              ) : (
+                item.status
+              )}
+            </td>
+            <td className="">
+              {editingItemId === item._id ? (
+                <>
+        
+                    <i className="bi bi-upload text-primary p-2" onClick={handleUpdate}></i>
               
+        
+                    <i className="bi bi-x-lg text-danger p-2"     onClick={handleCancelEdit}></i>
+           
+                </>
+              ) : (
+                <>
+                 
+                    <i className="bi bi-pencil-square text-primary p-2"       onClick={() => handleEdit(item)}
+></i>
+             
+                
+                    <i className="bi bi-trash-fill text-danger p-2" onClick={() => handleDelete(item._id)}></i>
+               
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+
     
-    </div>
-    </div><br></br>
-    </div>
+    </table>
+
+            
+  
+  </div>
+  </div><br></br>
+  </div>}</>
+
+
 
 
   

@@ -16,39 +16,23 @@ import EmailVerification from "./components/EmailVerification";
 function App() {
   const location = useLocation();
 
-  // Check if the current route is EmployeeRegistration or EmployeeLogin
-  const isEmployeeRoute =
-    location.pathname.includes("/EmployeeRegistration") ||
-    location.pathname.includes("/EmployeeLogin") ||
-    location.pathname === "/";
 
-  // Check if the current route is the EmailVerification component
-  const isEmailVerificationRoute = location.pathname.includes("/verify-email");
 
-  // Determine whether to show the sidebar based on the current route
-  const showSidebar = !(isEmployeeRoute || isEmailVerificationRoute || location.pathname === "/dashboard");
+  const RouteWrapper =
+  location.pathname === "/email" ||
+    location.pathname==="/scheduleform" ||
+    location.pathname==="/schedule" ||
+    location.pathname==="/create" ||
+    location.pathname==="/dashboard" ||
+    location.pathname==="/table"
 
-  // Determine whether to show the 404 page based on the current route
-  const showNotFound = !(
-    isEmployeeRoute ||
-    isEmailVerificationRoute ||
-    location.pathname === "/" ||
-    location.pathname === "/dashboard" ||
-    location.pathname === "/table" ||
-    location.pathname === "/schedule" ||
-    location.pathname === "/scheduleform" ||
-    location.pathname === "/email"
-  );
 
-  console.log("Location:", location.pathname);
-  console.log("Is Employee Route:", isEmployeeRoute);
-  console.log("Is Email Verification Route:", isEmailVerificationRoute);
-  console.log("Show Sidebar:", showSidebar);
-  console.log("Show Not Found:", showNotFound);
+
 
   return (
     <div style={{ display: "flex" }} className="App">
-      {showSidebar && <Sidebar />} {/* Render Sidebar conditionally */}
+      {RouteWrapper && <Sidebar />}{" "}
+      {/* Render Sidebar conditionally */}
       <Routes>
         <Route path="/" element={<EmployeeLogin />} />
         <Route
@@ -63,7 +47,7 @@ function App() {
         <Route path="/scheduleform" element={<ScheduleForm />} />
         <Route path="/email" element={<EmailBox />} />
         <Route path="/verify-email/:token" element={<EmailVerification />} />
-        <Route path="*" element={<NotFound />} /> 
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
