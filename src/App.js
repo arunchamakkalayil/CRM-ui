@@ -12,6 +12,8 @@ import Schedule from "./components/Schedule";
 import ScheduleForm from "./components/ScheduleForm";
 import EmailBox from "./components/EmailBox";
 import EmailVerification from "./components/EmailVerification";
+import ResetPassword from "./components/ResetPassword";
+import NewPassword from "./components/NewPassword";
 
 function App() {
   const location = useLocation();
@@ -47,6 +49,9 @@ function App() {
         <Route path="/scheduleform" element={<ScheduleForm />} />
         <Route path="/email" element={<EmailBox />} />
         <Route path="/verify-email/:token" element={<EmailVerification />} />
+        <Route path="/reset-password/:token" element={<NewPassword />} />
+
+        <Route path="/forgotpassword" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

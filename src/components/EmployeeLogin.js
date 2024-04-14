@@ -98,7 +98,7 @@ function EmployeeLogin() {
       } else if (error.response && error.response.status === 404) {
         setErrorMessage("User not found");
       } else if (error.response && error.response.status === 403) {
-        setErrorMessage("Email not verified. Please verify your email before logging in.");
+        setErrorMessage("Email not verified. Check mail for Verification Link");
       } else {
         console.error("Error:", error);
         setErrorMessage("Something went wrong");
@@ -169,6 +169,7 @@ function EmployeeLogin() {
           <div className="text-center fontstyle">
             <Link to="/forgotpassword">Forgot Password?</Link>
           </div>
+          <br />
           <p className="text-center fontstyle">
             Create an account{" "}
             <span>
