@@ -13,7 +13,7 @@ const [resStatus,setResStatus]=useState(true)
       });
       if (response.status === 200) {
         setResStatus(false)
-        setMessage('Password reset instructions sent to your email.');
+        setMessage('Link to reset password was sent to your mail');
         setTimeout(() => {
           setMessage('');
         }, 5000); // Hide message after 5 seconds

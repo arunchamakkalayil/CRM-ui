@@ -65,9 +65,11 @@ function EmployeeRegistration() {
           phone,
         });
 
-        if (response.status === 201) {
-          setErrorMessage('Registration Successful');
-          navigate('/EmployeeLogin');
+        if (response.status === 201 || response.status === 200) {
+          setErrorMessage('Please verify your mail');
+          setTimeout(() => {
+            navigate('/EmployeeLogin');
+          }, 5000); // Navigate after 5 seconds
         }
       } catch (error) {
         if (error.response && error.response.status === 400) {

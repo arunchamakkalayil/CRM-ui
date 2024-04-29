@@ -52,7 +52,19 @@ function AddData() {
   }, [navigate]);
 
   const handleFileChange = (e) => {
-    // Handle file change
+    const file = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const wb = read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = utils.sheet_to_json(ws, { header: 1 });
+      setParsedData(data);
+    };
+  
+    reader.readAsBinaryString(file);
   };
 
   const handleSubmit = async (e) => {
@@ -123,7 +135,7 @@ function AddData() {
         `${process.env.REACT_APP_URL}/excelData`,
         excelData
       );
-  
+  console.log(filteredData)
       if (response.status === 201) {
         setIsVisible(true);
         setTimeout(() => {
