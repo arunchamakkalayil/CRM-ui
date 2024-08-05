@@ -5,7 +5,6 @@ import './form.css';
 import axios from 'axios';
 // eslint-disable-next-line
 import { Link, useNavigate } from 'react-router-dom';
-import { Alert } from 'react-bootstrap'; // Import Bootstrap Alert component
 function EmployeeRegistration() {
   const navigate = useNavigate();
   const [name, setName] = useState('');

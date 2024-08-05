@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import EmployeeRegistration from "./components/EmployeeRegistration";
+// import EmployeeRegistration from "./components/EmployeeRegistration";
 import EmployeeLogin from "./components/EmployeeLogin";
 import TableData from "./components/Table";
 import Navbar from "./components/Navbar";
@@ -36,10 +36,10 @@ function App() {
       {/* Render Sidebar conditionally */}
       <Routes>
         <Route path="/" element={<Viewer />} />
-        <Route
+        {/* <Route
           path="/EmployeeRegistration"
           element={<EmployeeRegistration />}
-        />
+        /> */}
         <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
         <Route path="/table" element={<TableData />} />
         <Route path="/create" element={<AddData />} />
