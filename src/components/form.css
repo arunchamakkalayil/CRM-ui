@@ -4,16 +4,13 @@
   justify-content: center;
   align-items: center;
 }
-
 .form-row {
   display: flex;
   flex-direction: row;
 }
-
 .form-group {
   margin: 10px;
 }
-
 .container header {
   font-size: 1.5rem;
   color: #333;
@@ -24,16 +21,13 @@
 .container .form {
   width: 90%;
 }
-
 .form .input-box {
   width: 100%;
   margin-top: 20px;
 }
-
 .input-box label {
   color: #6499e9;
 }
-
 .form :where(.input-box input, .select-box) {
   position: relative;
   height: 50px;
@@ -47,48 +41,39 @@
   padding: 0 15px;
   background-color: white;
 }
-
 .input-box input:focus {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 }
-
 .form .column {
   display: flex;
   column-gap: 15px;
 }
-
 .form .gender-box {
   margin-top: 20px;
 }
-
 .gender-box h3 {
   color: #333;
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 8px;
 }
-
 .container h2 {
   font-family: 'Black Ops One', cursive;
   color: #0d6efd;
   font-size: 26px;
 }
-
 .form :where(.gender-option, .gender) {
   display: flex;
   align-items: center;
   column-gap: 50px;
   flex-wrap: wrap;
 }
-
 .form .gender {
   column-gap: 5px;
 }
-
 .gender input {
   accent-color: rgb(130, 106, 251);
 }
-
 .form :where(.gender input, .gender label) {
   cursor: pointer;
 }
@@ -173,4 +158,25 @@
   top: 20px;
   right: 20px;
   z-index: 1000; /* Ensure it's above other elements */
+}
+.suggestions-list {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
 }

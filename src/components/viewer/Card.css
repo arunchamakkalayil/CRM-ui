@@ -1,0 +1,114 @@
+/* Card.css */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Space between cards */
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(145deg, #f9f9f9, #ffffff);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(33.333% - 32px); /* Adjust card width to fit three per row */
+  max-width: calc(33.333% - 32px); /* Ensures cards don’t exceed one third of the row */
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-bottom: 2px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.card-body {
+  padding: 16px;
+  position: relative;
+}
+
+.card-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #007bff, #00c853);
+}
+
+.card-text {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: right;
+  border-top: 2px solid #ddd;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-not-picked {
+  background-color: #007bff;
+}
+
+.status-picked {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-received {
+  background-color: #28a745;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 16px); /* Two cards per row on medium screens */
+    max-width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    flex: 1 1 100%; /* One card per row on small screens */
+    max-width: 100%;
+  }
+}

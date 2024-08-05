@@ -1,29 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Context from "../context/Context";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./css/table.css";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
-import DeleteConfirmationModal from "./DeleteConfirmationModal"; 
-import Loader from "./Loader"
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import Loader from "./Loader";
 function Table(props) {
-  console.log(props)
-
-  const { setDelMessage, setDelStatus,seterrVisible,setError,delMessage, delStatus, error, errVisible  } = useContext(Context);
+  const {
+    setDelMessage,
+    setDelStatus,
+    seterrVisible,
+    setError,
+    delMessage,
+    delStatus,
+    error,
+    errVisible,
+  } = useContext(Context);
   const [data, setData] = useState([]);
   const [editingItemId, setEditingItemId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const [places, setPlaces] = useState([]);
   const [editedItem, setEditedItem] = useState({
-    name: "",
-    email: "",
+    place: "",
+    quantity: null,
     phone: "",
-    status:"",
-    month: "" // Added month field
+    status: "",
+    item: "",
   });
 
-  // State for showing/hiding the confirmation modal
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // Loader state
@@ -34,7 +41,13 @@ function Table(props) {
 
   const handleCancelEdit = () => {
     setEditingItemId(null);
-    setEditedItem({ name: "", email: "", phone: "", status: "", month: "" });
+    setEditedItem({
+      place: "",
+      item: "",
+      phone: "",
+      status: "",
+      quantity: null,
+    });
   };
 
   const handleUpdate = async () => {
@@ -50,13 +63,16 @@ function Table(props) {
         prevData.map((item) =>
           item._id === editingItemId ? response.data : item
         )
-        
       );
-    
-      setEditingItemId(null);
-      setEditedItem({ name: "", email: "", phone: "", status: "", month: "" });
 
-     
+      setEditingItemId(null);
+      setEditedItem({
+        place: "",
+        quantity: null,
+        phone: "",
+        status: "",
+        item: "",
+      });
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Access the error message from the response data
@@ -69,7 +85,7 @@ function Table(props) {
       } else {
         console.error(error);
       }
-    }finally {
+    } finally {
       setIsLoading(false); // Hide loader
     }
   };
@@ -97,7 +113,7 @@ function Table(props) {
         console.error("Error deleting item:", error);
       });
 
-    setShowConfirmationModal(false); 
+    setShowConfirmationModal(false);
   };
 
   const getData = async () => {
@@ -113,7 +129,7 @@ function Table(props) {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    }finally {
+    } finally {
       setIsLoading(false); // Hide loader
     }
   };
@@ -122,7 +138,6 @@ function Table(props) {
     const userLoggedIn = async () => {
       const token = localStorage.getItem("usersdatatoken");
       if (token) {
-
         try {
           setIsLoading(true); // Show loader
           // Send a request to the backend to validate the token
@@ -164,38 +179,45 @@ function Table(props) {
             // Something else went wrong
             console.error("Unknown error occurred:", error);
           }
-        }finally {
+        } finally {
           setIsLoading(false); // Hide loader
         }
-      }else{
+      } else {
         navigate("/");
-         }
+      }
     };
+    
 
     userLoggedIn();
     getData();
+    const fetchPlaces = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/camps`);
+        setPlaces(response.data || []);
+      } catch (error) {
+        console.error("Error fetching camps:", error);
+      }
+    };
+  
+    fetchPlaces();
   }, [navigate]);
-
 
   const filteredData = data.filter((item) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
-      (item.name && item.name.toLowerCase().includes(lowerCaseSearchTerm)) ||
-      (item.email && item.email.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (item.item && item.item.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (item.place && item.place.toLowerCase().includes(lowerCaseSearchTerm)) ||
       (item.phone && item.phone.toLowerCase().includes(lowerCaseSearchTerm)) ||
-      (item.status && item.status.toLowerCase().includes(lowerCaseSearchTerm))||
-      (item.month && item.month.toLowerCase().includes(lowerCaseSearchTerm)) // Filter by month as well
-
+      (item.status && item.status.toLowerCase().includes(lowerCaseSearchTerm))
     );
   });
-  
   const exportToExcel = () => {
     const filename = "table_data.xlsx";
     const formattedData = filteredData.map((item) => ({
-      Name: item.name,
-      Email: item.email,
+      Item: item.item,
+      Quantity: item.quantity,
+      Place: item.place,
       Phone: item.phone,
-      Month:item.month,
       Status: item.status,
     }));
     const ws = XLSX.utils.json_to_sheet(formattedData);
@@ -203,205 +225,233 @@ function Table(props) {
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
     XLSX.writeFile(wb, filename);
   };
-
   return (
-    <>{isLoading ? <Loader />:<div className="d-flex flex-column shadow" style={{width:"75%",margin:"auto",borderRadius:"10px",backgroundColor:"#fff"}}>
-    <Link
-              to="/create"
-              className="btn btn-success btn-floating"
-              style={{
-                position: "fixed",
-                bottom: "20px",
-                right: "20px",
-                padding: "10px 20px",
-                borderRadius: "50%",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                fontSize: "24px",
-                backgroundColor: "#28a745", // Green color
-                border: "none",
-                color: "white",
-                zIndex:"1"
-              }}
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div
+          className="d-flex flex-column"
+          style={{
+            margin: "auto",
+            borderRadius: "10px",
+            backgroundColor: "#fff",
+            height: "95vh",
+          }}
+        >
+          <Link
+            to="/create"
+            className="btn btn-success btn-floating"
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              padding: "10px 20px",
+              borderRadius: "50%",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              fontSize: "24px",
+              backgroundColor: "#28a745", // Green color
+              border: "none",
+              color: "white",
+              zIndex: "1",
+            }}
+          >
+            +
+          </Link>
+          <DeleteConfirmationModal
+            show={showConfirmationModal}
+            handleClose={() => setShowConfirmationModal(false)}
+            handleDelete={confirmDelete}
+          />
+          
+          {delMessage && (
+            <div
+              className="alert alert-success"
+              role="alert"
+              style={{ position: "fixed", top: 20, right: 20 }}
             >
-              +
-            </Link>
-            <DeleteConfirmationModal
-              show={showConfirmationModal}
-              handleClose={() => setShowConfirmationModal(false)}
-              handleDelete={confirmDelete}
-            />
-            
-            {delMessage && (
-          <div className="alert alert-success" role="alert" style={{ position: 'fixed', top: 20, right: 20 }}><i class="bi bi-check2-circle"> </i>
-                {delStatus}
+              <i class="bi bi-check2-circle"> </i>
+              {delStatus}
+            </div>
+          )}
+          {errVisible && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <div className=" pt-3" style={{ overflowX: "auto" }}>
+            <div className="table-responsive px-3 h-100">
+              <div className="mb-5">
+                <input
+                  type="text"
+                  id="form-control"
+                  className="form-control"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="btn btn-primary m-2" onClick={exportToExcel}>
+                  Export
+                </button>
               </div>
-            )}
-            {errVisible && (
-              <div className="alert alert-danger" role="alert">
-                {error}
-              </div>
-            )}
+              <table
+                id="dtBasicExample"
+                className="table table-sm table-border-3"
+                cellSpacing="0"
+                width="100%"
+              >
+                <thead className="sticky-header">
+                  <tr>
+                    <th className="px-1 th-sm text-center py-3" scope="col">
+                      <i class="bi bi-bag-dash text-primary"> </i> Item
+                    </th>
+                    <th className="px-1 th-sm text-center py-3" scope="col">
+                      <i class="bi bi-box2 text-primary"> </i>Quantity
+                    </th>
+                    <th className="px-1 th-sm text-center py-3" scope="col">
+                      <i class="bi bi-geo-alt text-primary"> </i>Place
+                    </th>
+                    <th className="px-1 th-sm text-center py-3" scope="col">
+                      <i class="bi bi-telephone text-primary"> </i>Receiver 
+                    </th>
+                    <th className="px-1 th-sm text-center py-3" scope="col">
+                      <i class="bi bi-bookmark text-primary"> </i>Status
+                    </th>
+                    <th className="px-1 th-s text-center py-3" scope="col">
+                      <i class="bi bi-gear-fill text-primary"> </i>Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.map((item) => (
+                    <tr key={item._id}>
+                      <td className="text-center">
+                        {editingItemId === item._id ? (
+                          <input
+                            type="text"
+                            value={editedItem.item}
+                            onChange={(e) =>
+                              setEditedItem({
+                                ...editedItem,
+                                item: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          item.item
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {editingItemId === item._id ? (
+                          <input
+                            type="number"
+                            value={editedItem.quantity}
+                            onChange={(e) =>
+                              setEditedItem({
+                                ...editedItem,
+                                quantity: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          item.quantity
+                        )}
+                      </td>
+                      <td className="text-center">
+  {editingItemId === item._id ? (
+    <select
+      value={editedItem.place}
+      onChange={(e) =>
+        setEditedItem({
+          ...editedItem,
+          place: e.target.value,
+        })
+      }
+    >
+      <option value="">Select a place</option>
+      {places.map((place) => (
+        <option key={place._id} value={place.name}>
+          {place.name}
+        </option>
+      ))}
+    </select>
+  ) : (
+    item.place
+  )}
+</td>
+                      <td className="text-center">
+                        {editingItemId === item._id ? (
+                          <input
+                            type="text"
+                            value={editedItem.phone}
+                            onChange={(e) =>
+                              setEditedItem({
+                                ...editedItem,
+                                phone: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          item.phone
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {editingItemId === item._id ? (
+                          <select
+                            value={editedItem.status}
+                            onChange={(e) =>
+                              setEditedItem({
+                                ...editedItem,
+                                status: e.target.value,
+                              })
+                            }
+                          >
+                            <option value="received">Received</option>
+                            <option value="picked">Picked</option>
+                            <option value="not_picked">Not Picked</option>
+                          </select>
+                        ) : (
+                          item.status
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {editingItemId === item._id ? (
+                          <>
+                            <i
+                              className="bi bi-upload text-primary p-2"
+                              onClick={handleUpdate}
+                            ></i>
 
-<div className="table-container pt-3" style={{ overflowX: "auto" }}>
-    <div className="table-responsive px-5">
-    <div className="mb-5">
-      <input
-        type="text"
-        id="form-control"
-        className="form-control"
-        placeholder="Search"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-       <button className="btn btn-primary m-2" onClick={exportToExcel}>
-    Export
-  </button>
-    </div>
-    <table
-      id="dtBasicExample"
-      className="table table-sm table-border-3"
-      cellSpacing="0"
-      width="100%"
-      
-    >  
-     <thead className="sticky-header">
-     <tr>
-<th className="px-1 th-sm text-left py-3" scope="col">
-<i class="bi bi-people text-primary"> </i> Name
-</th>
-<th className="px-1 th-sm text-left py-3" scope="col">
-<i class="bi bi-envelope text-primary"> </i> Email
-</th>
-<th className="px-1 th-sm text-left py-3" scope="col">
-<i class="bi bi-telephone text-primary"> </i>Phone
-</th>
-<th className="px-1 th-sm text-left py-3" scope="col">
-<i class="bi bi-calendar4 text-primary"> </i>Month
-</th>
-<th className="px-1 th-sm text-left py-3" scope="col">
-<i class="bi bi-bookmark text-primary"> </i>Status
-</th>
-<th className="px-1 th-s text-left py-3" scope="col">
-<i class="bi bi-gear-fill text-primary"> </i>Actions
-</th>
-</tr>
+                            <i
+                              className="bi bi-x-lg text-danger p-2"
+                              onClick={handleCancelEdit}
+                            ></i>
+                          </>
+                        ) : (
+                          <>
+                            <i
+                              className="bi bi-pencil-square text-primary p-2"
+                              onClick={() => handleEdit(item)}
+                            ></i>
 
-      </thead>
-      <tbody >
-      {filteredData.map((item) => (
-          <tr key={item._id}>
-            <td className="">
-              {editingItemId === item._id ? (
-                <input 
-                  type="text"
-                
-                  value={editedItem.name}
-                  onChange={(e) =>
-                    setEditedItem({ ...editedItem, name: e.target.value })
-                  }
-                />
-              ) : (
-                item.name
-              )}
-            </td>
-            <td className="">
-              {editingItemId === item._id ? (
-                <input
-                  type="text"
-                  value={editedItem.email}
-                  onChange={(e) =>
-                    setEditedItem({ ...editedItem, email: e.target.value })
-                  }
-                />
-              ) : (
-                item.email
-              )}
-            </td>
-            <td className="">
-              {editingItemId === item._id ? (
-                <input
-                  type="text"
-                  value={editedItem.phone}
-                  onChange={(e) =>
-                    setEditedItem({ ...editedItem, phone: e.target.value })
-                  }
-                />
-              ) : (
-                item.phone
-              )}
-            </td>
-            <td className="">
-              {editingItemId === item._id ? (
-                <input
-                  type="text"
-                  value={editedItem.month}
-                  onChange={(e) =>
-                    setEditedItem({ ...editedItem, month: e.target.value })
-                  }
-                />
-              ) : (
-                item.month
-              )}
-            </td>
-            <td className="">
-              {editingItemId === item._id ? (
-                <select
-                  value={editedItem.status}
-                  onChange={(e) =>
-                    setEditedItem({ ...editedItem, status: e.target.value })
-                  }
-                >
-                  <option value="closed">Closed</option>
-                  <option value="pending">Pending</option>
-                  <option value="lost">Lost</option>
-                  <option value="not_connected">Not Connected</option>
-        
-                </select>
-              ) : (
-                item.status
-              )}
-            </td>
-            <td className="">
-              {editingItemId === item._id ? (
-                <>
-        
-                    <i className="bi bi-upload text-primary p-2" onClick={handleUpdate}></i>
-              
-        
-                    <i className="bi bi-x-lg text-danger p-2"     onClick={handleCancelEdit}></i>
-           
-                </>
-              ) : (
-                <>
-                 
-                    <i className="bi bi-pencil-square text-primary p-2"       onClick={() => handleEdit(item)}
-></i>
-             
-                
-                    <i className="bi bi-trash-fill text-danger p-2" onClick={() => handleDelete(item._id)}></i>
-               
-                </>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-
-    
-    </table>
-
-            
-  
-  </div>
-  </div><br></br>
-  </div>}</>
-
-
-
-
-  
+                            <i
+                              className="bi bi-trash-fill text-danger p-2"
+                              onClick={() => handleDelete(item._id)}
+                            ></i>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br></br>
+        </div>
+      )}
+    </>
   );
 }
 
 export default Table;
-

@@ -75,7 +75,6 @@ function EmployeeRegistration() {
         if (error.response && error.response.status === 400) {
           setErrorMessage('User with this email already exists');
         } else {
-          console.log('Error:', error);
           setErrorMessage('Error during registration');
         }
       }

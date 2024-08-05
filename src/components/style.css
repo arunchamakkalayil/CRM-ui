@@ -9,7 +9,19 @@ color:#ffffff;
 background-color: black;
 } */
 
-
+.navbar-power {
+    cursor: pointer;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #fff !important;
+    padding-right: 20px;
+  }
+  
+  .navbar-nav .nav-link.active {
+    font-weight: bold;
+  }
+  
 .pro-sidebar-footer{
 background-color: black;
 }

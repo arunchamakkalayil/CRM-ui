@@ -18,9 +18,8 @@ const [linkStatus,setLinkStatus] = useState(false)
   const validateToken = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/validate-token/${token}`);
-      console.log(response.status);
+
     if(response.status === 200){
-        console.log("Token valid")
    setLinkStatus(true)
       }
     } catch (error) {

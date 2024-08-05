@@ -21,14 +21,10 @@ const EmailVerification = () => {
           setmessage('Invalid Token');
         } 
         else if(response.status === 500){
-          // Email verification failed
-          console.log('Internal Server Error');
           setIcon(<i class="bi bi-check2-circle text-info"></i>)
           setmessage("Internal Server Error")
         }
          else if   (response.status === 200) {
-          // Email verification successful
-          console.log('Email verified successfully');
           setIcon(<i class="bi bi-check2-circle text-info"></i>)
           setmessage('Email verified successfully')
      

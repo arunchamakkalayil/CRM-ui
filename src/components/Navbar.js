@@ -1,63 +1,57 @@
-import React from 'react'
-import { useNavigate } from "react-router-dom";
-function Navbar() {
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Modal, Button, Navbar, Nav } from 'react-bootstrap';
+import '../components/css/navbar.css';
+
+const TopNavbar = () => {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-   // Function to handle logout
-   const handleLogout = () => {
-    // Clear the user's token from local storage
-    localStorage.removeItem("usersdatatoken");
-
-    // Navigate to the login page
-    navigate("/EmployeeLogin");
+  const handleLogout = () => {
+    localStorage.removeItem('usersdatatoken');
+    navigate('/EmployeeLogin');
   };
+
   return (
-    <div>
-      <nav className="navbar bg-body-tertiary fixed-top">
-  <div className="container-fluid">
-    <a className="navbar-brand" >Dashboard</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div className="offcanvas-body">
-        <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li className="nav-item">
-            <a className="nav-link active" aria-current="page" >Home</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" >Link</a>
-          </li>
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-            <ul className="dropdown-menu">
-              <li><a className="dropdown-item">Action</a></li>
-              <li><a className="dropdown-item" >Another action</a></li>
-              <li>
-       
-              </li>
-              <li><a className="dropdown-item" >Something else here</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form className="d-flex mt-3" role="search">
-        <button onClick={handleLogout} className="btn btn-danger">
-          Logout
-        </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</nav>
-    </div>
-  )
-}
+    <>
+<Navbar className="px-3" bg="dark" variant="dark" expand="lg">
+  <Navbar.Brand>Admin-Pannel</Navbar.Brand>
+  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Collapse id="basic-navbar-nav">
+    <Nav className="me-auto">
+      <NavLink exact to="/table" className="nav-link">
+        Goods
+      </NavLink>
+      <NavLink exact to="/contact" className="nav-link">
+        Volunteers
+      </NavLink>
+      <NavLink exact to="/camps" className="nav-link">
+        Camps
+      </NavLink>
+    </Nav>
+    <Nav className="ms-auto">
+      <Nav.Link onClick={() => setShowLogoutModal(true)}>
+        <i className="bi bi-power"></i>Logout
+      </Nav.Link>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>
 
-export default Navbar
 
+
+      <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Logout Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to log out?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={handleLogout}>Logout</Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
+
+export default TopNavbar;

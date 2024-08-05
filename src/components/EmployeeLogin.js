@@ -36,7 +36,7 @@ function EmployeeLogin() {
  
           if (response.status === 200) {
             // Token is valid, navigate to the dashboard
-            navigate("/dashboard");
+            navigate("/table");
           } else {
             // Handle unexpected response status codes
             console.error("Unexpected response status:", response.status);
@@ -84,14 +84,11 @@ function EmployeeLogin() {
         email,
         password,
       });
-      console.log("Response status:", response.status);
-      console.log(response.data.result);
+
       if (response.status === 200) {
         setErrorMessage("");
-        console.log(response.data.result.token)
         localStorage.setItem("usersdatatoken", response.data.result.token);
-        console.log("Navigating to dashboard"); 
-        navigate("/dashboard");
+        navigate("/table");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -167,7 +164,7 @@ function EmployeeLogin() {
           </form>
           <br />
     
-          <div className="text-center fontstyle">
+          {/* <div className="text-center fontstyle">
             <Link to="/forgotpassword">Forgot Password?</Link>
           </div>
           <br />
@@ -176,7 +173,7 @@ function EmployeeLogin() {
             <span>
               <Link to="/EmployeeRegistration">Signup</Link>
             </span>
-          </p>
+          </p> */}
         </div>
       )}
     </div>

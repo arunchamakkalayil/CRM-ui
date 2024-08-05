@@ -7,9 +7,7 @@ const DeleteConfirmationModal = ({ show, handleClose, handleDelete }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Confirmation</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
-              <span aria-hidden="true">&times;</span>
-            </button>
+
           </div>
           <div className="modal-body">
             <p>Are you sure you want to delete this item?</p>

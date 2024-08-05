@@ -16,10 +16,6 @@ const ContextProvider = ({ children }) => {
   const [notConnected, setNotConnected] = useState(0);
   const [lost, setLost] = useState(0);
 
-
-    // For debugging purposes, log the values
-    console.log("delMessage:", delMessage);
-    console.log("delStatus:", delStatus);
     
   return (
     <Context.Provider value={{ delMessage, setDelMessage,delStatus, setDelStatus,isVisible, setIsVisible,errVisible, seterrVisible,error, setError,closed, setClosed,pending, setPending,notConnected, setNotConnected,lost, setLost }}>

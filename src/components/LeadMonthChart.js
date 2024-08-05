@@ -51,7 +51,6 @@ const ApexChart = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/monthCount`);
       const responseData = response.data;
-console.log(responseData)
 const leadCounts = months.map(month => {
   return responseData.data[month] || 0;
 });

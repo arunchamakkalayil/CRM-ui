@@ -40,10 +40,10 @@ const Sidebar = () => {
               <CDBSidebarMenuItem icon="columns" >Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/table" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Leads</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="user">Goods</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/schedule" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Meetings</CDBSidebarMenuItem>
+            <NavLink exact to="/contact" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="table"> Delivery Hubs</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/email" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="inbox">Email</CDBSidebarMenuItem>
