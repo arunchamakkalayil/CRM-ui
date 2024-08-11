@@ -26,7 +26,7 @@ const status = "not_picked"
 
   return (
     <div className=" mt-4">
-      <h3>Requirements</h3>
+      <h3>Requirements</h3><br></br>
       <div className="card-container d-flex flex-wrap">
         {data.map((item) => (
           <Card key={item._id} item={item} />

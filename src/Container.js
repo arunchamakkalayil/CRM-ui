@@ -15,6 +15,7 @@ import NewPassword from "./components/NewPassword";
 import Viewer from "./components/viewer/Viewer"
 import Camps from "./components/Camps"
 import AddCamp from "./components/AddCamp"
+import AboutUs from "./components/viewer/About";
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
       {/* Render Sidebar conditionally */}
       <Routes>
         <Route path="/" element={<Viewer />} />
+        <Route path="/about-us" element={<AboutUs />} />
         {/* <Route
           path="/EmployeeRegistration"
           element={<EmployeeRegistration />}
