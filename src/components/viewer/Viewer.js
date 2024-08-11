@@ -10,22 +10,40 @@ const Viewer = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid w-100">
-        <a className="navbar-brand" href="/">
-          <i className="bi bi-people"></i> <b>ERM</b>
-        </a>
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link to="/" className="nav-link" style={{color:'black !important'}}>Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/about-us" className="nav-link" style={{color:'black !important'}}>About Us</Link>
-            </li>
-          </ul>
+        <div className="container-fluid w-100">
+          <a className="navbar-brand" href="/">
+            <i className="bi bi-people"></i> <b>ERM</b>
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link to="/" className="nav-link">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/about-us" className="nav-link">
+                  About Us
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
       <div style={{ flex: '1' }}>
         <div className="mt-4">
           <ul
